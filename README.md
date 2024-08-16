@@ -1,3 +1,4 @@
-This is the starting code for this tutorial.
+# Prachsocial
 
-**IMPORTANT**: After cloning the repo, open the command line inside the project and run `npm i --legacy-peer-deps`.
+## Installation
+>>> npm i --legacy-peer-deps
