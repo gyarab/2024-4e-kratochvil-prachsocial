@@ -1,4 +1,11 @@
 # Prachsocial
 
 ## Installation
->>> npm i --legacy-peer-deps
+```bash
+npm i --legacy-peer-deps
+```
+
+## Running Development Server
+```bash
+npm run dev 
+```
