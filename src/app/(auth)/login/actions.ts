@@ -29,6 +29,7 @@ export async function login(
       };
     }
 
+    //https://lucia-auth.com/guides/email-and-password/basics#register-user
     const passwordMatch = await verify(existingUser.passwordHash, password, {
       memoryCost: 19456,
       timeCost: 2,

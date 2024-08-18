@@ -15,6 +15,7 @@ export async function signUp(
   try {
     const { username, email, password } = signupSchema.parse(credentials);
 
+    //https://lucia-auth.com/guides/email-and-password/basics#register-user
     const passwordHash = await hash(password, {
       memoryCost: 19456,
       timeCost: 2,
