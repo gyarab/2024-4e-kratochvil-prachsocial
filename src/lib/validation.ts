@@ -26,3 +26,10 @@ export type LoginValues = z.infer<typeof loginSchema>;
 export const createPostSchema = z.object({
   content: requiredString,
 });
+
+export const updateUserProfileSchema = z.object({
+  displayName: requiredString,
+  bio: z.string().max(200, "Bio must be less than 200 characters long"),
+});
+
+export type UpdateUserProfileValues = z.infer<typeof updateUserProfileSchema>;
