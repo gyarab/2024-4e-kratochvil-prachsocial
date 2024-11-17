@@ -35,9 +35,9 @@ crontab -e
 ```bash
 0 2 * * * curl -X GET "http://localhost:3000/api/clear" -H "Authorization: Bearer [CRON_SECRET]"
 ```
-<summary>
+<details>
 Replace [CRON_SECRET] with yours from .env
-</summary>
+</details>
 
 ## Running Development Server
 ```bash
