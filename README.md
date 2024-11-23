@@ -5,7 +5,7 @@
 npm i --legacy-peer-deps
 ```
 
-## Get [UploadThing](https://uploadthing.com)
+### Get [UploadThing](https://uploadthing.com)
 1. Create Project
 2. Copy Secret and App ID under Legacy
 
@@ -25,6 +25,7 @@ CRON_SECRET='Random String'
 ### Setup Prisma
 ```bash
 npx prisma generate
+npx prisma db push
 ```
 
 ### Setup Cron Job for Clearing Orphaned Uploads
