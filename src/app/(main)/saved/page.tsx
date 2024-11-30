@@ -2,7 +2,7 @@ import TrendsSidebar from "@/components/TrendsSidebar";
 import { Metadata } from "next";
 import Saved from "./Saved";
 export const metadata: Metadata = {
-  title: "Bookmarks",
+  title: "Saved Posts",
 };
 export default function Page() {
   return (

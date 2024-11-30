@@ -54,6 +54,7 @@ export function getPostDataInclude(loggedInUserId: string) {
     _count: {
       select: {
         likes: true,
+        comments: true,
       },
     },
   } satisfies Prisma.PostInclude;
@@ -68,6 +69,23 @@ export interface PostsPage {
   nextCursor: string | null;
 }
 
+export function getCommentDataInclude(loggedInUserId: string) {
+  return {
+    user: {
+      select: getUserDataSelect(loggedInUserId),
+    },
+  } satisfies Prisma.CommentInclude;
+}
+
+export type CommentData = Prisma.CommentGetPayload<{
+  include: ReturnType<typeof getCommentDataInclude>;
+}>;
+
+export interface CommentsPage {
+  comments: CommentData[];
+  previousCursor: string | null;
+}
+
 export interface FollowerInfo {
   followers: number;
   isFollowedByUser: boolean;
@@ -79,5 +97,5 @@ export interface LikeInfo {
 }
 
 export interface SavedInfo {
-  isSavedByUser: boolean
+  isSavedByUser: boolean;
 }
