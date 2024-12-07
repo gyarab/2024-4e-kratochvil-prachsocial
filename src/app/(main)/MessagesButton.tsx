@@ -29,13 +29,13 @@ export default function MessagesButton({ initialState }: MessagesButtonProps) {
     >
       <Link href="/messages">
         <div className="relative">
+          <Mail />
           {!!data.unreadCount && (
             <span className="absolute -right-1 -top-1 rounded-full bg-primary px-1 text-xs font-medium tabular-nums text-primary-foreground">
               {data.unreadCount}
             </span>
           )}
         </div>
-        <Mail />
         <span className="hidden lg:inline">Messages</span>
       </Link>
     </Button>
