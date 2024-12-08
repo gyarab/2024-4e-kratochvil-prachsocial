@@ -87,7 +87,7 @@ export async function signUp(
 
     console.error(error);
     return {
-      error: "An unexpected error occurred, please try again.",
+      error: "An unexpected error occurred. Please try again.",
     };
   }
 }
