@@ -20,7 +20,7 @@ Fill in these values into .env
 Fill in these values into .env
 </details>
 
-## Create (Google Cloud Project)[https://console.cloud.google.com/]
+## Create [Google Cloud Project](https://console.cloud.google.com/)
 1. Create Project
 ### OAuth Consent Screen
 2. Select External
