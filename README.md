@@ -1,11 +1,11 @@
-# Prachsocial
+# **PrachSocial**
 
-## Installation
+# Installation
 ```bash
 npm i --legacy-peer-deps
 ```
 
-### Get [UploadThing](https://uploadthing.com)
+## Get [UploadThing](https://uploadthing.com)
 1. Create Project
 2. Copy *Secret* and *App ID* under Legacy
 <details>
@@ -37,7 +37,7 @@ Fill in these values into .env
 Fill in these values into .env
 </details>
 
-### Create .env file
+## Create .env file
 ```bash
 POSTGRES_USER="username"
 POSTGRES_HOST="host"
@@ -57,13 +57,13 @@ CRON_SECRET='Random String'
 NEXT_PUBLIC_BASE_URL='http://localhost:3000'
 ```
 
-### Setup Prisma
+## Setup Prisma
 ```bash
 npx prisma generate
 npx prisma db push
 ```
 
-### Setup Cron Job for Clearing Orphaned Uploads
+## Setup Cron Job for Clearing Orphaned Uploads
 ```bash
 crontab -e
 ```
@@ -75,7 +75,7 @@ crontab -e
 Replace [CRON_SECRET] with yours from .env
 </details>
 
-## Running Development Server
+# Running Development Server
 ```bash
 npm run dev
 ```
