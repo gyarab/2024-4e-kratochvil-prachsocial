@@ -6,6 +6,18 @@ import { UploadThingError, UTApi } from "uploadthing/server";
 
 const f = createUploadthing();
 
+const formatFileUrl = (fileUrl: string) => {
+
+  const filePathMatch = fileUrl.match(/\/f\/(.+)$/);
+  if (!filePathMatch || !filePathMatch[1]) {
+    console.error("Could not parse file URL:", fileUrl);
+    return fileUrl;
+  }
+  
+  const filePath = filePathMatch[1];
+  return `https://utfs.io/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/${filePath}`;
+};
+
 export const fileRouter = {
   avatar: f({
     image: { maxFileSize: "1MB" },
@@ -17,20 +29,15 @@ export const fileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       const oldAvatarUrl = metadata.user.avatarUrl;
-
       if (oldAvatarUrl) {
-        const key = oldAvatarUrl.split(
-          `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
-        )[1];
-
-        await new UTApi().deleteFiles(key);
+        const keyMatch = oldAvatarUrl.match(/\/a\/[^/]+\/(.+)$/);
+        if (keyMatch && keyMatch[1]) {
+          await new UTApi().deleteFiles(keyMatch[1]);
+        }
       }
-
-      const newAvatarUrl = file.url.replace(
-        "/f/",
-        `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
-      );
-
+      
+      const newAvatarUrl = formatFileUrl(file.url);
+      
       await Promise.all([
         prisma.user.update({
           where: { id: metadata.user.id },
@@ -43,34 +50,26 @@ export const fileRouter = {
           },
         }),
       ]);
-
       return { avatarUrl: newAvatarUrl };
     }),
-
   attachment: f({
     image: { maxFileSize: "4MB", maxFileCount: 5 },
     video: { maxFileSize: "16MB", maxFileCount: 5 },
   })
   .middleware(async () => {
     const { user } = await validateRequest();
-
     if (!user) throw new UploadThingError("Unauthorized");
-
     return {};
   })
   .onUploadComplete(async ({ file }) => {
     const media = await prisma.media.create({
       data: {
-        url: file.url.replace(
-          "/f/",
-          `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
-        ),
+        url: formatFileUrl(file.url),
         type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
       },
     });
-
-      return { mediaId: media.id };
-    }),
+    return { mediaId: media.id };
+  }),
 } satisfies FileRouter;
 
 export type AppFileRouter = typeof fileRouter;
