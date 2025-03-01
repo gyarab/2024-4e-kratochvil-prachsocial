@@ -19,13 +19,17 @@ export const fileRouter = {
       const oldAvatarUrl = metadata.user.avatarUrl;
 
       if (oldAvatarUrl) {
-        const key = oldAvatarUrl.split("/f/").pop();
-        if (key) {
-          await new UTApi().deleteFiles(key);
-        }
+        const key = oldAvatarUrl.split(
+          `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+        )[1];
+
+        await new UTApi().deleteFiles(key);
       }
 
-      const newAvatarUrl = file.url;
+      const newAvatarUrl = file.url.replace(
+        "/f/",
+        `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+      );
 
       await Promise.all([
         prisma.user.update({
@@ -47,18 +51,23 @@ export const fileRouter = {
     image: { maxFileSize: "4MB", maxFileCount: 5 },
     video: { maxFileSize: "16MB", maxFileCount: 5 },
   })
-    .middleware(async () => {
-      const { user } = await validateRequest();
-      if (!user) throw new UploadThingError("Unauthorized");
-      return {};
-    })
-    .onUploadComplete(async ({ file }) => {
-      const media = await prisma.media.create({
-        data: {
-          url: file.url,
-          type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
-        },
-      });
+  .middleware(async () => {
+    const { user } = await validateRequest();
+
+    if (!user) throw new UploadThingError("Unauthorized");
+
+    return {};
+  })
+  .onUploadComplete(async ({ file }) => {
+    const media = await prisma.media.create({
+      data: {
+        url: file.url.replace(
+          "/f/",
+          `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+        ),
+        type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
+      },
+    });
 
       return { mediaId: media.id };
     }),
