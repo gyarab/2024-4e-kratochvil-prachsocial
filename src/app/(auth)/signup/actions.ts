@@ -10,12 +10,21 @@ import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+/**
+ * Server action pro registraci noveho uzivatele
+ *
+ * @param credentials - registracni udaje (username, email, password)
+ * @returns Promise, ktery pri uspechu provede presmerovani na hlavni stranku 
+ * nebo vrati objekt s chybovou zpravou
+ */
 export async function signUp(
   credentials: signupValues,
 ): Promise<{ error: string }> {
   try {
+    // Validace vstupnich dat
     const { username, email, password } = signupSchema.parse(credentials);
 
+    // Vytvoreni hash hesla pomoci Argon2
     //https://lucia-auth.com/guides/email-and-password/basics#register-user
     const passwordHash = await hash(password, {
       memoryCost: 19456,
@@ -24,8 +33,10 @@ export async function signUp(
       parallelism: 1,
     });
 
+    // Generovani ID uzivatele
     const userId = generateIdFromEntropySize(10);
 
+    // Kontrola duplicitniho username
     const existingUsername = await prisma.user.findFirst({
       where: {
         username: {
@@ -41,6 +52,7 @@ export async function signUp(
       };
     }
 
+    // Kontrola duplicitniho emailu
     const existingEmail = await prisma.user.findFirst({
       where: {
         email: {
@@ -56,6 +68,7 @@ export async function signUp(
       };
     }
 
+    // Vytvoreni uzivatele v databazi a v Stream v ramci transakce
     await prisma.$transaction(async (tx) => {
       await tx.user.create({
         data: {
@@ -66,6 +79,7 @@ export async function signUp(
           passwordHash,
         },
       });
+      // Vytvoreni uzivatele v chat sluzbe Stream
       await streamServerClient.upsertUser({
         id: userId,
         username,
@@ -73,6 +87,7 @@ export async function signUp(
       });
     });
 
+    // Vytvoreni session a nastaveni cookie
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(
@@ -81,6 +96,7 @@ export async function signUp(
       sessionCookie.attributes,
     );
 
+    // Presmerovani na hlavni stranku
     return redirect("/");
   } catch (error) {
     if (isRedirectError(error)) throw error;

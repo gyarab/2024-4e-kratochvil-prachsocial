@@ -11,12 +11,19 @@ import {
 import LoadingButton from "../LoadingButton";
 import { Button } from "../ui/button";
 
+/**
+ * Props pro dialog potvrzeni smazani prispevku
+ */
 interface DeletePostDialogProps {
-  post: PostData;
-  open: boolean;
-  onClose: () => void;
+  post: PostData; // Data prispevku, ktery bude smazan
+  open: boolean; // Stav otevreni/zavreni dialogu
+  onClose: () => void; // Callback pri zavreni dialogu
 }
 
+/**
+ * Dialog pro potvrzeni smazani prispevku
+ * Ukazuje potvrzovaci zpravu a tlacitka pro smazani/zruseni
+ */
 export default function DeletePostDialog({
   post,
   open,
@@ -24,7 +31,9 @@ export default function DeletePostDialog({
 }: DeletePostDialogProps) {
   const mutation = useDeletePostMutation();
 
+  // Handler pro kontrolu zavreni dialogu
   function handleOpenChange(open: boolean) {
+    // Zabraneni zavreni dialogu pokud probiha mazani
     if (!open || !mutation.isPending) {
       onClose();
     }

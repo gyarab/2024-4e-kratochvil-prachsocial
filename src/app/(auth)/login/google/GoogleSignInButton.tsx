@@ -1,5 +1,9 @@
 import { Button } from "@/components/ui/button";
 
+/**
+ * Komponenta tlacitka pro prihlaseni pres Google
+ * Pouziva Google OAuth flow, presmerovava na /login/google endpoint
+ */
 export default function GoogleSignInButton() {
   return (
     <Button
@@ -15,6 +19,10 @@ export default function GoogleSignInButton() {
   );
 }
 
+/**
+ * SVG ikona Google loga v originalnich barvach
+ * @author https://www.svgrepo.com/show/303108/google-icon-logo.svg
+ */
 function GoogleIcon() {
   return (
     <svg

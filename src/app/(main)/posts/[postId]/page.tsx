@@ -18,6 +18,7 @@ interface PageProps {
   };
 }
 
+// Cache funkce pro nacteni prispevku
 const getPost = cache(async (postId: string, loggedInUserId: string) => {
   const post = await prisma.post.findUnique({
     where: {
@@ -31,6 +32,7 @@ const getPost = cache(async (postId: string, loggedInUserId: string) => {
   return post;
 });
 
+// Generovani metadat pro SEO
 export async function generateMetadata({ params: { postId } }: PageProps) {
   const { user } = await validateRequest();
 
@@ -43,6 +45,7 @@ export async function generateMetadata({ params: { postId } }: PageProps) {
   };
 }
 
+// Stranka s detailem prispevku
 export default async function Page({ params: { postId } }: PageProps) {
   const { user } = await validateRequest();
 
@@ -74,6 +77,7 @@ interface UserInfoSidebarProps {
   user: UserData;
 }
 
+// Bocni panel s informacemi o uzivateli
 async function UserInfoSidebar({ user }: UserInfoSidebarProps) {
   const { user: loggedInUser } = await validateRequest();
 

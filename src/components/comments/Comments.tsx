@@ -12,7 +12,12 @@ interface CommentsProps {
   post: PostData;
 }
 
+/**
+ * Komponenta pro zobrazeni komentaru k prispevku
+ * Pouziva obracenou infinite query - nejstarsi komentare se nacitaji prvni
+ */
 export default function Comments({ post }: CommentsProps) {
+  // Nacteni komentaru z API s paginaci
   const { data, fetchNextPage, hasNextPage, isFetching, status } =
     useInfiniteQuery({
       queryKey: ["comments", post.id],
@@ -25,17 +30,22 @@ export default function Comments({ post }: CommentsProps) {
           .json<CommentsPage>(),
       initialPageParam: null as string | null,
       getNextPageParam: (firstPage) => firstPage.previousCursor,
+      // Obraceni poradi stranek - nejstarsi komentare prvni
       select: (data) => ({
         pages: [...data.pages].reverse(),
         pageParams: [...data.pageParams].reverse(),
       }),
     });
 
+  // Extrakce vsech komentaru ze vsech stranek
   const comments = data?.pages.flatMap((page) => page.comments) || [];
 
   return (
     <div className="space-y-3">
+      {/* Vstupni pole pro novy komentar */}
       <CommentInput post={post} />
+
+      {/* Tlacitko pro nacteni dalsich komentaru - nahore, protoze nacitame starsi */}
       {hasNextPage && (
         <Button
           variant="link"
@@ -46,6 +56,8 @@ export default function Comments({ post }: CommentsProps) {
           Load more comments
         </Button>
       )}
+
+      {/* Stavy nacitani a chyb */}
       {status === "pending" && <Loader2 className="mx-auto animate-spin" />}
       {status === "success" && !comments.length && (
         <p className="text-center text-muted-foreground">No comments yet! ):</p>
@@ -55,6 +67,8 @@ export default function Comments({ post }: CommentsProps) {
           An error occurred while loading comments.
         </p>
       )}
+
+      {/* Seznam komentaru */}
       <div className="divide-y">
         {comments.map((comment) => (
           <Comment key={comment.id} comment={comment} />

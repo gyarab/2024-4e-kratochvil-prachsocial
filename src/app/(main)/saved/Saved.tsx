@@ -7,7 +7,10 @@ import kyInstance from "@/lib/ky";
 import { PostsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+
+// Komponenta pro zobrazeni ulozenych prispevku
 export default function Saved() {
+  // Nacteni ulozenych prispevku s nekonecnym scrollovanim
   const {
     data,
     fetchNextPage,
@@ -28,9 +31,13 @@ export default function Saved() {
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
   const posts = data?.pages.flatMap((page) => page.posts) || [];
+
+  // Stavy nacitani
   if (status === "pending") {
     return <PostsLoadingSkeleton />;
   }
+
+  // Zadne ulozene prispevky
   if (status === "success" && !posts.length && !hasNextPage) {
     return (
       <p className="text-center text-muted-foreground">
@@ -38,6 +45,8 @@ export default function Saved() {
       </p>
     );
   }
+
+  // Chybovy stav
   if (status === "error") {
     return (
       <p className="text-center text-destructive">

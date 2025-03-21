@@ -17,13 +17,22 @@ interface DeleteCommentDialogProps {
   onClose: () => void;
 }
 
+/**
+ * Dialog pro potvrzeni smazani komentare
+ * Zobrazi potvrzovaci dialog a zajisti smazani komentare
+ */
 export default function DeleteCommentDialog({
   comment,
   open,
   onClose,
 }: DeleteCommentDialogProps) {
+  // Hook pro smazani komentare
   const mutation = useDeleteCommentMutation();
 
+  /**
+   * Handler pro zmenu stavu otevreni dialogu
+   * Zavira dialog jen pokud neni aktivni mazani
+   */
   function handleOpenChange(open: boolean) {
     if (!open || !mutation.isPending) {
       onClose();

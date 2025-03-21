@@ -11,6 +11,11 @@ import { useRouter } from "next/navigation";
 import { updateUserProfile } from "./actions";
 import { PostsPage } from "@/lib/types";
 
+/**
+ * Custom hook pro aktualizaci profilu uzivatele
+ * Resi nahrani avataru i aktualizaci dat profilu
+ * Aktualizuje cache se vsemi prispevky uzivatele
+ */
 export function useUpdateProfileMutation() {
   const { toast } = useToast();
 
@@ -18,9 +23,11 @@ export function useUpdateProfileMutation() {
 
   const queryClient = useQueryClient();
 
+  // Hook pro nahrani avataru na uploadthing
   const { startUpload: startAvatarUpload } = useUploadThing("avatar");
 
   const mutation = useMutation({
+    // Paralelne nahrajeme profil i avatar (pokud byl zmenen)
     mutationFn: async ({
       values,
       avatar,
@@ -33,15 +40,20 @@ export function useUpdateProfileMutation() {
         avatar && startAvatarUpload([avatar]),
       ]);
     },
+
     onSuccess: async ([updatedUser, uploadResult]) => {
+      // Ziskame URL noveho avataru (pokud byl nahran)
       const newAvatarUrl = uploadResult?.[0].serverData.avatarUrl;
 
+      // Najdeme cache s prispevky
       const queryFilter: QueryFilters = {
         queryKey: ["post-feed"],
       };
 
+      // Zrusime probihajici dotazy
       await queryClient.cancelQueries(queryFilter);
 
+      // Aktualizujeme cache s prispevky - aktualizujeme uzivatele na vsech prispevich
       queryClient.setQueriesData<InfiniteData<PostsPage, string | null>>(
         queryFilter,
         (oldData) => {
@@ -52,6 +64,7 @@ export function useUpdateProfileMutation() {
             pages: oldData.pages.map((page) => ({
               nextCursor: page.nextCursor,
               posts: page.posts.map((post) => {
+                // Aktualizujeme uzivatele jen u jeho prispevku
                 if (post.user.id === updatedUser.id) {
                   return {
                     ...post,
@@ -68,12 +81,14 @@ export function useUpdateProfileMutation() {
         },
       );
 
+      // Aktualizujeme stranku a zobrazime uspech
       router.refresh();
 
       toast({
         description: "Profile updated!",
       });
     },
+
     onError(error) {
       console.error(error);
       toast({

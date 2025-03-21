@@ -10,11 +10,12 @@ import {
 import { Button } from "./ui/button";
 import "cropperjs/dist/cropper.css";
 
+// Typove definice props pro dialog na oriznutí obrazku
 interface CropImageDialogProps {
-  src: string;
-  cropAspectRation: number;
-  onCropped: (blob: Blob | null) => void;
-  onClose: () => void;
+  src: string; // URL obrazku k oriznutí
+  cropAspectRation: number; // Pomer stran vysledneho obrazku (napr. 1 pro ctverec)
+  onCropped: (blob: Blob | null) => void; // Callback kdyz je obrazek oriznuty
+  onClose: () => void; // Callback pro zavreni dialogu
 }
 
 export default function CropImageDialog({
@@ -23,11 +24,14 @@ export default function CropImageDialog({
   onCropped,
   onClose,
 }: CropImageDialogProps) {
+  // Reference na Cropper komponentu pro pristup k metodam knihovny
   const cropperRef = useRef<ReactCropperElement>(null);
 
+  // Funkce pro oriznutí obrazku a ziskani vysledku jako Blob
   function crop() {
     const cropper = cropperRef.current?.cropper;
     if (!cropper) return;
+    // Vytvorime webp blob a predame ho zpet pres callback
     cropper.getCroppedCanvas().toBlob((blob) => onCropped(blob), "image/webp");
     onClose();
   }
@@ -41,8 +45,8 @@ export default function CropImageDialog({
         <Cropper
           src={src}
           aspectRatio={cropAspectRation}
-          guides={false}
-          zoomable={false}
+          guides={false} // Bez vodicich car
+          zoomable={false} // Zakazuje zoom pro jednodussi pouziti
           ref={cropperRef}
           className="mx-auto size-fit"
         />

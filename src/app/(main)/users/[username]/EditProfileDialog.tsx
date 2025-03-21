@@ -1,5 +1,4 @@
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
-//import CropImageDialog from "@/components/CropImageDialog";
 import LoadingButton from "@/components/LoadingButton";
 import {
   Dialog,
@@ -38,11 +37,17 @@ interface EditProfileDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
+
+/**
+ * Dialog pro upravu profilu uzivatele
+ * Umoznuje zmenit profilovy obrazek, jmeno a bio
+ */
 export default function EditProfileDialog({
   user,
   open,
   onOpenChange,
 }: EditProfileDialogProps) {
+  // Inicializace formulare s validaci pomoci Zod
   const form = useForm<UpdateUserProfileValues>({
     resolver: zodResolver(updateUserProfileSchema),
     defaultValues: {
@@ -51,15 +56,23 @@ export default function EditProfileDialog({
     },
   });
 
+  // Hook pro zpracovani API pozadavku na aktualizaci profilu
   const mutation = useUpdateProfileMutation();
 
+  // State pro ulozeni upraveneho avataru
   const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null);
 
+  /**
+   * Zpracovani odeslani formulare
+   * Vytvori soubor z upraveneho avataru a odesle na server
+   */
   async function onSubmit(values: UpdateUserProfileValues) {
+    // Vytvori novy soubor pouze pokud je avatar zmenen
     const newAvatarFile = croppedAvatar
       ? new File([croppedAvatar], `avatar_${user.id}.webp`)
       : undefined;
 
+    // Odeslani dat na server
     mutation.mutate(
       {
         values,
@@ -141,14 +154,25 @@ interface AvatarInputProps {
   onImageCropped: (blob: Blob | null) => void;
 }
 
+/**
+ * Komponenta pro vyber a upravu profiloveho obrazku
+ * Zobrazuje aktualni avatar s moznosti nahrat a orezat novy
+ */
 function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
+  // State pro ulozeni obrazku pred oriznutim
   const [imageToCrop, setImageToCrop] = useState<File>();
 
+  // Reference na skryty file input
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  /**
+   * Zpracovani vybraneho obrazku
+   * Pouziva Resizer pro zmenseni obrazku pred oriznutim
+   */
   function onImageSelected(image: File | undefined) {
     if (!image) return;
 
+    // Zmensi obrazek na max 1024x1024 a prevede na WebP format
     Resizer.imageFileResizer(
       image,
       1024,
@@ -163,6 +187,7 @@ function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
 
   return (
     <>
+      {/* Skryty input pro vyber souboru */}
       <input
         type="file"
         accept="image/*"
@@ -170,6 +195,8 @@ function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
         ref={fileInputRef}
         className="sr-only hidden"
       />
+
+      {/* Tlacitko s nahledem avataru */}
       <button
         type="button"
         onClick={() => fileInputRef.current?.click()}
@@ -186,6 +213,8 @@ function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
           <Camera size={24} />
         </span>
       </button>
+
+      {/* Dialog pro oriznuti obrazku - zobrazi se jen kdyz je vybran obrazek */}
       {imageToCrop && (
         <CropImageDialog
           src={URL.createObjectURL(imageToCrop)}

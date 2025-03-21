@@ -13,7 +13,9 @@ import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import Notification from "./Notification";
 
+// Hlavni komponenta pro zobrazeni seznamu notifikaci
 export default function Notifications() {
+  // Nacitani notifikaci pomoci nekonecneho scrollovani
   const {
     data,
     fetchNextPage,
@@ -36,9 +38,11 @@ export default function Notifications() {
 
   const queryClient = useQueryClient();
 
+  // Mutace pro oznaceni notifikaci jako prectene
   const { mutate } = useMutation({
     mutationFn: () => kyInstance.patch("/api/notifications/mark-read"),
     onSuccess: () => {
+      // Aktualizace pocitadla neprectených notifikaci v UI
       queryClient.setQueryData(["unread-notification-count"], {
         unreadCount: 0,
       });
@@ -48,16 +52,19 @@ export default function Notifications() {
     },
   });
 
+  // Automaticky oznacit jako prectene pri nacteni
   useEffect(() => {
     mutate();
   }, [mutate]);
 
   const notifications = data?.pages.flatMap((page) => page.notifications) || [];
 
+  // Stavy nacitani
   if (status === "pending") {
     return <PostsLoadingSkeleton />;
   }
 
+  // Prazdny stav
   if (status === "success" && !notifications.length && !hasNextPage) {
     return (
       <p className="text-center text-muted-foreground">
@@ -66,6 +73,7 @@ export default function Notifications() {
     );
   }
 
+  // Chybovy stav
   if (status === "error") {
     return (
       <p className="text-center text-destructive">

@@ -15,6 +15,7 @@ interface ChatChannelProps {
   openSideBar: () => void;
 }
 
+// Komponenta zobrazujici aktivni chat kanal
 export default function ChatChannel({ open, openSideBar }: ChatChannelProps) {
   return (
     <div className={cn("w-full md:block", !open && "hidden")}>
@@ -29,10 +30,12 @@ export default function ChatChannel({ open, openSideBar }: ChatChannelProps) {
   );
 }
 
+// Rozsirujeme standardni props o moznost otevreni sidebaru
 interface CustomChannelHeaderProps extends ChannelHeaderProps {
   openSideBar: () => void;
 }
 
+// Vlastni header pro chat, pridava tlacitko pro mobilni zobrazeni
 function CustomChannelHeader({
   openSideBar,
   ...props

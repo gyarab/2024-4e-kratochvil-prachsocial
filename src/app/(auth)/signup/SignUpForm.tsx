@@ -18,11 +18,18 @@ import { signUp } from "./actions";
 import { PasswordInput } from "@/components/PasswordInput";
 import LoadingButton from "@/components/LoadingButton";
 
+/**
+ * Komponenta registracniho formulare
+ * Pouziva react-hook-form s validaci pomoci Zod schematu
+ */
 export default function SignUpForm() {
+  // State pro chybove hlasky ze serveru
   const [error, setError] = useState<string>();
 
+  // useTransition pro indikaci stavu odesilani formulare
   const [isPending, startTransition] = useTransition();
 
+  // Inicializace formulare s validacnim schematem
   const form = useForm<signupValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -32,6 +39,10 @@ export default function SignUpForm() {
     },
   });
 
+  /**
+   * Zpracovani odeslani formulare
+   * Vola server action signUp a zpracovava pripadnou chybu
+   */
   async function onSubmit(values: signupValues) {
     setError(undefined);
     startTransition(async () => {

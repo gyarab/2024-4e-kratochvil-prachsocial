@@ -22,32 +22,36 @@ import { useTheme } from "next-themes";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface UserButtonProps {
-  className?: string;
+  className?: string; // Dodatecne CSS tridy
 }
 
 export default function UserButton({ className }: UserButtonProps) {
-  const { user } = useSession();
-
-  const { theme, setTheme } = useTheme();
-
-  const queryClient = useQueryClient();
+  const { user } = useSession(); // Ziskame data prihlaseneho uzivatele
+  const { theme, setTheme } = useTheme(); // Hook pro praci s tematem (dark/light mode)
+  const queryClient = useQueryClient(); // Pristup k React Query cache
 
   return (
     <DropdownMenu>
+      {/* Trigger dropdown menu - avatar uzivatele */}
       <DropdownMenuTrigger asChild>
         <button className={cn("flex-none rounded-full", className)}>
           <UserAvatar avatarUrl={user.avatarUrl} size={40} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        {/* Zobrazeni username ve stylu labelu */}
         <DropdownMenuLabel>@{user.username}</DropdownMenuLabel>
         <DropdownMenuSeparator />
+
+        {/* Odkaz na profil */}
         <Link href={`/users/${user.username}`}>
           <DropdownMenuItem>
             <UserIcon className="mr-2 size-4" />
             Profile
           </DropdownMenuItem>
         </Link>
+
+        {/* Submenu pro vyber tematu */}
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
             <Monitor className="mr-2 size-4" />
@@ -73,11 +77,14 @@ export default function UserButton({ className }: UserButtonProps) {
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>
+
         <DropdownMenuSeparator />
+
+        {/* Tlacitko pro odhlaseni */}
         <DropdownMenuItem
           onClick={() => {
-            queryClient.clear();
-            logout();
+            queryClient.clear(); // Vycisti React Query cache pred odhlasenim
+            logout(); // Server action pro odhlaseni
           }}
         >
           <LogOutIcon className="mr-2 size-4" /> Logout

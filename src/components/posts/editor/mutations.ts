@@ -9,6 +9,11 @@ import { submitPost } from "./actions";
 import { PostsPage } from "@/lib/types";
 import { useSession } from "@/app/(main)/SessionProvider";
 
+/**
+ * Hook pro vytvoreni noveho prispevku a aktualizaci cache
+ *
+ * @returns Mutation objekt pro praci s vytvorenim postu
+ */
 export function useSubmitPostMutation() {
   const { toast } = useToast();
 
@@ -19,6 +24,7 @@ export function useSubmitPostMutation() {
   const mutation = useMutation({
     mutationFn: submitPost,
     onSuccess: async (newPost) => {
+      // Definice filtru pro aktualizaci cache - jen stranky "for-you" a profil aktualniho uzivatele
       const queryFilter = {
         queryKey: ["post-feed"],
         predicate(query) {
@@ -30,8 +36,10 @@ export function useSubmitPostMutation() {
         },
       } satisfies QueryFilters;
 
+      // Zruseni probihajicich dotazu pro prevenci race conditions
       await queryClient.cancelQueries(queryFilter);
 
+      // Optimisticka aktualizace - pridani noveho postu na zacatek feedu
       queryClient.setQueriesData<InfiniteData<PostsPage, string | null>>(
         queryFilter,
         (oldData) => {
@@ -52,6 +60,7 @@ export function useSubmitPostMutation() {
         },
       );
 
+      // Invalidace cache pro dalsi dotazy, ktere nejsou jeste nactene
       queryClient.invalidateQueries({
         queryKey: queryFilter.queryKey,
         predicate(query) {
@@ -59,6 +68,7 @@ export function useSubmitPostMutation() {
         },
       });
 
+      // Notifikace uzivateli o uspesnem vytvoreni
       toast({
         description: "Your post has been submitted!",
       });

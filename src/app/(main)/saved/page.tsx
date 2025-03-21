@@ -4,6 +4,8 @@ import Saved from "./Saved";
 export const metadata: Metadata = {
   title: "Saved Posts",
 };
+
+// Stranka s ulozenymi prispevky
 export default function Page() {
   return (
     <main className="flex w-full min-w-0 gap-5">

@@ -4,6 +4,8 @@ import Notifications from "./Notifications";
 export const metadata: Metadata = {
   title: "Notifications",
 };
+
+// Stranka s notifikacemi
 export default function Page() {
   return (
     <main className="flex w-full min-w-0 gap-5">

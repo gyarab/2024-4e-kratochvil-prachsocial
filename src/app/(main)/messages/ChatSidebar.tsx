@@ -17,6 +17,7 @@ interface ChatSidebarProps {
   onClose: () => void;
 }
 
+// Boční panel s seznamem chatu
 export default function ChatSidebar({ open, onClose }: ChatSidebarProps) {
   const { user } = useSession();
 
@@ -24,12 +25,14 @@ export default function ChatSidebar({ open, onClose }: ChatSidebarProps) {
 
   const { channel } = useChatContext();
 
+  // Aktualizace poctu neprectenych zprav pri zmene kanalu
   useEffect(() => {
     if (channel?.id) {
       queryClient.invalidateQueries({ queryKey: ["unread-messages-count"] });
     }
   }, [channel?.id, queryClient]);
 
+  // Vlastni nahledy kanalu - po kliknuti zavre sidebar na mobilu
   const CustomChannelPreview = useCallback(
     (props: ChannelPreviewUIComponentProps) => (
       <ChannelPreviewMessenger
@@ -87,6 +90,7 @@ interface MenuHeaderProps {
   onClose: () => void;
 }
 
+// Hlavicka sidebaru s tlacitky
 function MenuHeader({ onClose }: MenuHeaderProps) {
   const [showNewChatDialog, setShowNewChatDialog] = useState(false);
 

@@ -1,5 +1,4 @@
 "use client";
-
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import Post from "@/components/posts/Post";
 import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
@@ -11,7 +10,11 @@ import { Loader2 } from "lucide-react";
 interface SearchResultsProps {
   query: string;
 }
+
+// Komponenta pro zobrazeni vysledku vyhledavani
+// Pouziva nekonecny scroll pro nacteni dalsich vysledku
 export default function SearchResults({ query }: SearchResultsProps) {
+  // Nastaveni infinite query pro vyhledavani prispevku
   const {
     data,
     fetchNextPage,
@@ -32,12 +35,18 @@ export default function SearchResults({ query }: SearchResultsProps) {
         .json<PostsPage>(),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
-    gcTime: 0,
+    gcTime: 0, // Vypnuti cache (vzdy ziskat fresh data pri zmene query)
   });
+
+  // Ziskani vsech prispevku ze vsech nactenych stranek
   const posts = data?.pages.flatMap((page) => page.posts) || [];
+
+  // Zobrazeni skeletonu behem nacitani
   if (status === "pending") {
     return <PostsLoadingSkeleton />;
   }
+
+  // Zobrazeni zpravy, pokud nebyly nalezeny zadne prispevky
   if (status === "success" && !posts.length && !hasNextPage) {
     return (
       <p className="text-center text-muted-foreground">
@@ -45,6 +54,8 @@ export default function SearchResults({ query }: SearchResultsProps) {
       </p>
     );
   }
+
+  // Chybova zprava
   if (status === "error") {
     return (
       <p className="text-center text-destructive">
@@ -52,6 +63,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
       </p>
     );
   }
+
   return (
     <InfiniteScrollContainer
       className="space-y-5"

@@ -10,10 +10,18 @@ interface CommentProps {
   comment: CommentData;
 }
 
+/**
+ * Komponenta pro zobrazeni jednoho komentare
+ * Zobrazuje avatar uzivatele, jmeno, cas a obsah komentare
+ * Pro vlastni komentare zobrazuje tlacitko pro smazani
+ */
 export default function Comment({ comment }: CommentProps) {
+  // Ziskani dat prihlaseneho uzivatele pro kontrolu, zda je autorem
   const { user } = useSession();
+
   return (
     <div className="group/comment flex gap-3 py-3">
+      {/* Avatar uzivatele - skryty na malych obrazovkach */}
       <span className="hidden sm:inline">
         <UserTooltip user={comment.user}>
           <Link href={`/users/${comment.user.username}`}>
@@ -21,7 +29,10 @@ export default function Comment({ comment }: CommentProps) {
           </Link>
         </UserTooltip>
       </span>
+
+      {/* Hlavni obsah komentare */}
       <div>
+        {/* Jmeno uzivatele a cas komentare */}
         <div className="flex items-center gap-1 text-sm">
           <UserTooltip user={comment.user}>
             <Link
@@ -35,8 +46,12 @@ export default function Comment({ comment }: CommentProps) {
             {formatRelativeDate(comment.createdAt)}
           </span>
         </div>
+
+        {/* Text komentare */}
         <div>{comment.content}</div>
       </div>
+
+      {/* Tlacitko pro smazani - zobrazuje se jen pro vlastni komentare */}
       {comment.user.id === user?.id && (
         <CommentMoreButton
           comment={comment}

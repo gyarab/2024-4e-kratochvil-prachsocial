@@ -16,6 +16,7 @@ import { Check, Loader2, SearchIcon, X } from "lucide-react";
 import UserAvatar from "@/components/UserAvatar";
 import LoadingButton from "@/components/LoadingButton";
 
+// Dialog pro vytvoreni noveho chatu
 interface NewChatDialogProps {
   onOpenChange: (open: boolean) => void;
   onChatCreated: () => void;
@@ -31,6 +32,7 @@ export default function NewChatDialog({
 
   const { user: loggedInUser } = useSession();
 
+ // State pro vyhledavani a vybrane uzivatele
   const [searchInput, setSearchInput] = useState("");
   const searchInputDebounced = useDebounce(searchInput);
 
@@ -45,7 +47,7 @@ export default function NewChatDialog({
     queryFn: async () =>
       client.queryUsers(
         {
-          id: { $ne: loggedInUser.id },
+          id: { $ne: loggedInUser.id }, // Vynechat prihlaseneho uzivatele
           role: { $ne: "admin" },
           ...(searchInputDebounced
             ? {
@@ -95,6 +97,7 @@ export default function NewChatDialog({
           <DialogTitle>New Chat</DialogTitle>
         </DialogHeader>
         <div>
+        {/* Vyhledavaci pole */}
           <div className="group relative">
             <SearchIcon className="absolute left-5 top-1/2 size-5 -translate-y-1/2 transform text-muted-foreground group-focus-within:text-primary" />
             <input
@@ -104,6 +107,7 @@ export default function NewChatDialog({
               onChange={(e) => setSearchInput(e.target.value)}
             />
           </div>
+        {/* Seznam vybranych uzivatelu */}
           {!!selectedUsers.length && (
             <div className="mt-4 flex flex-wrap gap-2 p-2">
               {selectedUsers.map((user) => (
@@ -120,6 +124,7 @@ export default function NewChatDialog({
             </div>
           )}
           <hr />
+        {/* Seznam vyhledanych uzivatelu */}
           <div className="h-96 overflow-y-auto">
             {isSuccess &&
               data.users.map((user) => (
@@ -169,6 +174,7 @@ interface UserResultProps {
   onClick: () => void;
 }
 
+// Komponenta pro zobrazeni uzivatele ve vysledcich vyhledavani
 function UserResult({ user, selected, onClick }: UserResultProps) {
   return (
     <button
@@ -192,6 +198,7 @@ interface SelectedUserTagProps {
   onRemove: () => void;
 }
 
+// Komponenta pro zobrazeni vybraneho uzivatele (tag)
 function SelectedUserTag({ user, onRemove }: SelectedUserTagProps) {
   return (
     <button

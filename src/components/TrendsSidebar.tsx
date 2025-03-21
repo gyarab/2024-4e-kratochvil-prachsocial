@@ -21,6 +21,7 @@ export default function TrendsSidebar() {
   );
 }
 
+// Nacte navrhy uzivatelu k sledovani - ty, ktere uzivatel jeste nesleduje
 async function FollowSuggestions() {
   const { user } = await validateRequest();
 
@@ -29,16 +30,16 @@ async function FollowSuggestions() {
   const usersToFollow = await prisma.user.findMany({
     where: {
       NOT: {
-        id: user.id,
+        id: user.id, // Vylouci aktualniho uzivatele
       },
       followers: {
         none: {
-          followerId: user.id,
+          followerId: user.id, // Vylouci uzivatele, ktere uz sledujeme
         },
       },
     },
     select: getUserDataSelect(user.id),
-    take: 5,
+    take: 5, // Omezeno na 5 navrhu
   });
 
   return (
@@ -77,15 +78,17 @@ async function FollowSuggestions() {
   );
 }
 
+// Cache pro trending hashtagy - revalidace kazdé 2 hodiny
 const getTrendingTopics = unstable_cache(
   async () => {
+    // SQL dotaz pro ziskani nejpouzivanejsich hashtagů
     const result = await prisma.$queryRaw<{ hashtag: string; count: bigint }[]>`
-            SELECT LOWER(unnest(regexp_matches(content, '#[[:alnum:]_]+', 'g'))) AS hashtag, COUNT(*) AS count
-            FROM posts
-            GROUP BY (hashtag)
-            ORDER BY count DESC, hashtag ASC
-            LIMIT 5
-        `;
+           SELECT LOWER(unnest(regexp_matches(content, '#[[:alnum:]_]+', 'g'))) AS hashtag, COUNT(*) AS count
+           FROM posts
+           GROUP BY (hashtag)
+           ORDER BY count DESC, hashtag ASC
+           LIMIT 5
+       `;
 
     return result.map((row) => ({
       hashtag: row.hashtag,
@@ -94,7 +97,7 @@ const getTrendingTopics = unstable_cache(
   },
   ["trending_topics"],
   {
-    revalidate: 2 * 60 * 60,
+    revalidate: 2 * 60 * 60, // 2 hodiny
   },
 );
 

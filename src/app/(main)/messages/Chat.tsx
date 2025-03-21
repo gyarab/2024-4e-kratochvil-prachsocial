@@ -8,13 +8,14 @@ import ChatChannel from "./ChatChannel";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 
+// Hlavni komponenta pro chat
 export default function Chat() {
   const chatClient = useInitializeChatClient();
 
   const { resolvedTheme } = useTheme();
+  const [sidebarOpen, setSidebarOen] = useState(false); // State pro mobilni zobrazeni
 
-  const [sidebarOpen, setSidebarOen] = useState(false);
-
+  // Zobrazi loader dokud se chat klient nenacte
   if (!chatClient) {
     return <Loader2 className="mx-auto my-3 animate-spin" />;
   }

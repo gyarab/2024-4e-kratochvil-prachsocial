@@ -10,11 +10,18 @@ import {
 import { Button } from "../ui/button";
 import { MoreHorizontal, Trash2 } from "lucide-react";
 
+/**
+ * Props pro tlacitko akci prispevku
+ */
 interface PostMoreButtonProps {
-  post: PostData;
-  className?: string;
+  post: PostData; // Data prispevku
+  className?: string; // Volitelne CSS tridy
 }
 
+/**
+ * Tlacitko s vysouvaci nabidkou akci pro prispevek
+ * Aktualne obsahuje pouze moznost smazani
+ */
 export default function PostMoreButton({
   post,
   className,
@@ -23,6 +30,7 @@ export default function PostMoreButton({
 
   return (
     <>
+      {/* Dropdown menu s akcemi */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="icon" variant="ghost" className={className}>
@@ -38,6 +46,8 @@ export default function PostMoreButton({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Dialog pro potvrzeni smazani */}
       <DeletePostDialog
         post={post}
         open={showDeleteDialog}

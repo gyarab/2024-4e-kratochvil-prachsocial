@@ -8,12 +8,14 @@ interface PageProps {
   };
 }
 
+// Generovani metadat pro SEO
 export function generateMetadata({ searchParams: { q } }: PageProps): Metadata {
   return {
     title: `Search results for "${q}"`,
   };
 }
 
+// Stranka s vysledky vyhledavani
 export default function Page({ searchParams: { q } }: PageProps) {
   return (
     <main className="flex w-full min-w-0 gap-5">

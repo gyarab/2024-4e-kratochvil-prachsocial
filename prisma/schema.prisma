@@ -1,12 +1,8 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+//https://www.prisma.io/docs/orm/overview/databases/postgresql
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearchPostgres"]
+  previewFeatures = ["fullTextSearchPostgres"] // Podpora pro fulltextove vyhledavani v PostgreSQL
 }
 
 datasource db {
@@ -15,6 +11,7 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+// Uzivatelsky model
 model User {
   id                    String         @id
   username              String         @unique
@@ -24,10 +21,11 @@ model User {
   googleId              String?        @unique
   avatarUrl             String?
   bio                   String?
+  // Relace
   sessions              Session[]
   posts                 Post[]
-  following             Follow[]       @relation("Following")
-  followers             Follow[]       @relation("Followers")
+  following             Follow[]       @relation("Following") // Koho uzivatel sleduje
+  followers             Follow[]       @relation("Followers") // Kdo sleduje uzivatele
   likes                 Like[]
   saved_posts           Saved[]
   comments              Comment[]
@@ -39,6 +37,7 @@ model User {
   @@map("users")
 }
 
+// Model pro session (prihlaseni)
 model Session {
   id        String   @id
   userId    String
@@ -48,16 +47,18 @@ model Session {
   @@map("sessions")
 }
 
+// Model pro sledovani uzivatelu
 model Follow {
   followerId  String
   follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
   followingId String
   following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
 
-  @@unique([followerId, followingId])
+  @@unique([followerId, followingId]) // Uzivatel muze sledovat jineho uzivatele jen jednou
   @@map("follows")
 }
 
+// Model pro prispevky
 model Post {
   id            String         @id @default(cuid())
   content       String
@@ -74,6 +75,7 @@ model Post {
   @@map("posts")
 }
 
+// Model pro media (obrazky, videa) prilohy k prispevkum
 model Media {
   id     String    @id @default(cuid())
   postId String?
@@ -86,11 +88,13 @@ model Media {
   @@map("post_media")
 }
 
+// Typy medii
 enum MediaType {
   IMAGE
   VIDEO
 }
 
+// Model pro komentare
 model Comment {
   id      String @id @default(cuid())
   content String
@@ -104,16 +108,18 @@ model Comment {
   @@map("comments")
 }
 
+// Model pro likes
 model Like {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   postId String
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, postId])
+  @@unique([userId, postId]) // Uzivatel muze likovat prispevek jen jednou
   @@map("likes")
 }
 
+// Model pro ulozene prispevky
 model Saved {
   id     String @id @default(cuid())
   userId String
@@ -123,10 +129,11 @@ model Saved {
 
   createdAt DateTime @default(now())
 
-  @@unique([userId, postId])
+  @@unique([userId, postId]) // Uzivatel muze ulozit prispevek jen jednou
   @@map("saved_posts")
 }
 
+// Model pro notifikace
 model Notification {
   id          String           @id @default(cuid())
   recipientId String
@@ -143,6 +150,7 @@ model Notification {
   @@map("notifications")
 }
 
+// Typy notifikaci
 enum NotificationType {
   LIKE
   FOLLOW

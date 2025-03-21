@@ -12,7 +12,12 @@ interface UserPostsProps {
   userId: string;
 }
 
+/**
+ * Komponenta pro zobrazeni prispevku konkretniho uzivatele
+ * Pouziva nekonecny scroll pro postupne nacitani dalsich prispevku
+ */
 export default function UserPosts({ userId }: UserPostsProps) {
+  // Nastaveni infinite query pro nacitani prispevku uzivatele podle ID
   const {
     data,
     fetchNextPage,
@@ -33,12 +38,15 @@ export default function UserPosts({ userId }: UserPostsProps) {
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
+  // Extrakce vsech prispevku ze vsech nactenych stranek
   const posts = data?.pages.flatMap((page) => page.posts) || [];
 
+  // Zobrazeni loading stavu
   if (status === "pending") {
     return <PostsLoadingSkeleton />;
   }
 
+  // Zobrazeni zpravy, pokud uzivatel nema zadne prispevky
   if (status === "success" && !posts.length && !hasNextPage) {
     return (
       <p className="text-center text-muted-foreground">
@@ -47,6 +55,7 @@ export default function UserPosts({ userId }: UserPostsProps) {
     );
   }
 
+  // Chybova zprava
   if (status === "error") {
     return (
       <p className="text-center text-destructive">

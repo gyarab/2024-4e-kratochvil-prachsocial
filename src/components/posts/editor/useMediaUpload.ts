@@ -2,12 +2,18 @@ import { useToast } from "@/components/ui/use-toast";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useState } from "react";
 
+// Definice struktury prilohy
 export interface Attachment {
   file: File;
-  mediaId?: string;
+  mediaId?: string; // ID nahrane prilohy v DB, none pokud se jeste nahrava
   isUploading: boolean;
 }
 
+/**
+ * Hook pro spravu nahravani medii k prispevkum
+ *
+ * @returns Metody a stav pro praci s nahravanymi soubory
+ */
 export default function useMediaUpload() {
   const { toast } = useToast();
 
@@ -15,7 +21,9 @@ export default function useMediaUpload() {
 
   const [uploadProgress, setUploadProgress] = useState<number>();
 
+  // Inicializace UploadThing hooku
   const { startUpload, isUploading } = useUploadThing("attachment", {
+    // Pred zahajenim nahravani prejmenovani souboru pro lepsi organizaci
     onBeforeUploadBegin(files) {
       const renamedFiles = files.map((file) => {
         const extension = file.name.split(".").pop();
@@ -28,6 +36,7 @@ export default function useMediaUpload() {
         );
       });
 
+      // Pridani souboru do lokalniho stavu
       setAttachments((prev) => [
         ...prev,
         ...renamedFiles.map((file) => ({ file, isUploading: true })),
@@ -35,7 +44,9 @@ export default function useMediaUpload() {
 
       return renamedFiles;
     },
+    // Sledovani prubehu nahravani
     onUploadProgress: setUploadProgress,
+    // Po dokonceni nahravani aktualizace lokalniho stavu s ID z backendu
     onClientUploadComplete(res) {
       setAttachments((prev) =>
         prev.map((a) => {
@@ -49,6 +60,7 @@ export default function useMediaUpload() {
         }),
       );
     },
+    // Osetreni chyb pri nahravani
     onUploadError(e) {
       setAttachments((prev) => prev.filter((a) => !a.isUploading));
       toast({
@@ -58,7 +70,9 @@ export default function useMediaUpload() {
     },
   });
 
+  // Wrapper nad startUpload s validaci
   function handleStartUpload(files: File[]) {
+    // Prevence vicenasobneho nahravani
     if (isUploading) {
       toast({
         variant: "destructive",
@@ -67,6 +81,7 @@ export default function useMediaUpload() {
       return;
     }
 
+    // Kontrola maximalniho poctu priloh
     if (attachments.length + files.length > 5) {
       toast({
         variant: "destructive",
@@ -78,10 +93,12 @@ export default function useMediaUpload() {
     startUpload(files);
   }
 
+  // Odstraneni prilohy z lokalniho stavu
   function removeAttachment(fileName: string) {
     setAttachments((prev) => prev.filter((a) => a.file.name !== fileName));
   }
 
+  // Reset stavu pro novy prispevek
   function reset() {
     setAttachments([]);
     setUploadProgress(undefined);

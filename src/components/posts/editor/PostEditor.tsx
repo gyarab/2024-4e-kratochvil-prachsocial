@@ -17,11 +17,16 @@ import useMediaUpload, { Attachment } from "./useMediaUpload";
 import { useDropzone } from "@uploadthing/react";
 import { ClipboardEvent } from "react";
 
+/**
+ * Hlavni komponenta pro editor prispevku
+ * Umoznuje psat text a pridavat obrazky/videa
+ */
 export default function PostEditor() {
   const { user } = useSession();
 
   const mutation = useSubmitPostMutation();
 
+  // Hook pro spravu nahravani medii
   const {
     startUpload,
     attachments,
@@ -31,12 +36,14 @@ export default function PostEditor() {
     reset: resetMediaUploads,
   } = useMediaUpload();
 
+  // Podpora pro drag & drop souboru
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: startUpload,
   });
 
   const { onClick, ...rootProps } = getRootProps();
 
+  // Inicializace textoveho editoru
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -54,6 +61,7 @@ export default function PostEditor() {
       blockSeparator: "\n",
     }) || "";
 
+  // Odeslani prispevku
   function onSubmit() {
     mutation.mutate(
       {
@@ -69,6 +77,7 @@ export default function PostEditor() {
     );
   }
 
+  // Podpora pro vkladani obrazku z clipboardu
   function onPaste(e: ClipboardEvent<HTMLInputElement>) {
     const files = Array.from(e.clipboardData.items)
       .filter((item) => item.kind === "file")
@@ -122,6 +131,9 @@ export default function PostEditor() {
   );
 }
 
+/**
+ * Tlacitko pro pridani priloh (obrazky/videa)
+ */
 interface AddAttachmentsButtonProps {
   onFilesSelected: (files: File[]) => void;
   disabled: boolean;
@@ -144,6 +156,7 @@ function AddAttachmentsButton({
       >
         <ImageIcon size={20} />
       </Button>
+      {/* Skryty input pro vyber souboru */}
       <input
         type="file"
         accept="image/*, video/*"
@@ -162,6 +175,9 @@ function AddAttachmentsButton({
   );
 }
 
+/**
+ * Zobrazeni nahledu priloh
+ */
 interface AttachmentPreviewsProps {
   attachments: Attachment[];
   removeAttachment: (fileName: string) => void;
@@ -189,6 +205,9 @@ function AttachmentPreviews({
   );
 }
 
+/**
+ * Komponenta pro zobrazeni nahledu jedne prilohy
+ */
 interface attachmentPreviewProps {
   attachment: Attachment;
   onRemoveClick: () => void;
@@ -228,5 +247,3 @@ function AttachmentPreview({
     </div>
   );
 }
-
-// thx stackoverflow za bugless prehravac ;)

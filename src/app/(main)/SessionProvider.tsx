@@ -8,8 +8,13 @@ interface SessionContext {
   session: Session;
 }
 
+// Vytvoreni kontextu pro sdileni session dat v ramci aplikace
 const SessionContext = createContext<SessionContext | null>(null);
 
+/**
+ * Provider pro predani session dat komponentam
+ * Pouziva se v hlavnim layoutu aplikace
+ */
 export default function SessionProvider({
   children,
   value,
@@ -19,6 +24,13 @@ export default function SessionProvider({
   );
 }
 
+/**
+ * Hook pro pristup k datum prihlaseneho uzivatele a session
+ * Pouziva se v klientskych komponentach pro ziskani informaci o uzivateli
+ *
+ * @throws Error pokud se pouzije mimo SessionProvider
+ * @returns Objekt obsahujici data uzivatele a session
+ */
 export function useSession() {
   const context = useContext(SessionContext);
 

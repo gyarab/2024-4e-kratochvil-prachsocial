@@ -15,14 +15,20 @@ interface CommentMoreButtonProps {
   className?: string;
 }
 
+/**
+ * Tlacitko s rozbalovacim menu pro akce s komentarem
+ * Obsahuje pouze moznost smazani komentare
+ */
 export default function CommentMoreButton({
   comment,
   className,
 }: CommentMoreButtonProps) {
+  // State pro zobrazeni/skryti dialogu pro smazani
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   return (
     <>
+      {/* Dropdown menu */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="icon" variant="ghost" className={className}>
@@ -38,6 +44,8 @@ export default function CommentMoreButton({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Dialog pro potvrzeni smazani komentare */}
       <DeleteCommentDialog
         comment={comment}
         open={showDeleteDialog}

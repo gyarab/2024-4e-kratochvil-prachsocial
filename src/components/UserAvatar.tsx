@@ -3,9 +3,9 @@ import avatarPlaceholder from "@/assets/avatar-placeholder.png";
 import { cn } from "@/lib/utils";
 
 interface UserAvatarProps {
-  avatarUrl: string | null | undefined;
-  size?: number;
-  className?: string;
+  avatarUrl: string | null | undefined; // URL avataru uzivatele
+  size?: number; // Volitelna velikost v pixelech
+  className?: string; // Dodatecne CSS tridy
 }
 
 export default function UserAvatar({
@@ -15,10 +15,10 @@ export default function UserAvatar({
 }: UserAvatarProps) {
   return (
     <Image
-      src={avatarUrl || avatarPlaceholder}
+      src={avatarUrl || avatarPlaceholder} // Pokud avatar neexistuje, pouzije placeholder
       alt="Avatar"
-      width={size ?? 48}
-      height={size ?? 48}
+      width={size ?? 48} // Defaultni sirka 48px
+      height={size ?? 48} // Defaultni vyska 48px
       className={cn(
         "aspect-square h-fit flex-none rounded-full bg-secondary object-cover",
         className,

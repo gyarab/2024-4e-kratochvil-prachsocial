@@ -8,8 +8,8 @@ import { Button } from "./ui/button";
 import kyInstance from "@/lib/ky";
 
 interface FollowButtonProps {
-  userId: string;
-  initialState: FollowerInfo;
+  userId: string; // ID uzivatele, ktereho sledujeme/prestaneme sledovat
+  initialState: FollowerInfo; // Pocatecni stav - sledujeme/nesledujeme a pocet sledujicich
 }
 
 export default function FollowButton({
@@ -20,20 +20,27 @@ export default function FollowButton({
 
   const queryClient = useQueryClient();
 
+  // Nacitame aktualni stav sledovani (pocet sledujicich a zda sledujeme)
   const { data } = useFollowerInfo(userId, initialState);
 
+  // Klic pro tanstack query cache
   const queryKey: QueryKey = ["folower-info", userId];
 
+  // Mutace pro sledovani/odsledovani uzivatele
   const { mutate } = useMutation({
+    // Posleme POST nebo DELETE pozadavek podle aktualniho stavu
     mutationFn: () =>
       data.isFollowedByUser
         ? kyInstance.delete(`/api/users/${userId}/followers`)
         : kyInstance.post(`/api/users/${userId}/followers`),
+
+    // Optimistic update - okamzite aktualizujeme UI pred dokoncenim requestu
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey });
 
       const previousState = queryClient.getQueryData<FollowerInfo>(queryKey);
 
+      // Aktualizujeme pocet sledujicich a stav tlacitka
       queryClient.setQueryData<FollowerInfo>(queryKey, () => ({
         followers:
           (previousState?.followers || 0) +
@@ -43,6 +50,8 @@ export default function FollowButton({
 
       return { previousState };
     },
+
+    // Pri chybe vratime puvodni stav a zobrazime chybovou hlasku
     onError(error, variables, context) {
       queryClient.setQueryData(queryKey, context?.previousState);
       console.error(error);
@@ -55,6 +64,7 @@ export default function FollowButton({
 
   return (
     <Button
+      // Meni vzhled tlacitka podle stavu sledovani
       variant={data.isFollowedByUser ? "secondary" : "default"}
       onClick={() => mutate()}
     >

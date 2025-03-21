@@ -16,10 +16,17 @@ import { useState } from "react";
 import { MessageSquare } from "lucide-react";
 import Comments from "../comments/Comments";
 
+/**
+ * Props pro komponentu prispevku
+ */
 interface PostProps {
   post: PostData;
 }
 
+/**
+ * Hlavni komponenta pro zobrazeni jednoho prispevku
+ * Obsahuje hlavicku s autorem, text, media a tlacitka
+ */
 export default function Post({ post }: PostProps) {
   const { user } = useSession();
 
@@ -27,6 +34,7 @@ export default function Post({ post }: PostProps) {
 
   return (
     <article className="group/post space-y-3 rounded-2xl bg-card p-5 shadow-sm">
+      {/* Hlavicka prispevku s autorem a casem */}
       <div className="flex justify-between gap-3">
         <div className="flex flex-wrap gap-3">
           <UserTooltip user={post.user}>
@@ -52,6 +60,8 @@ export default function Post({ post }: PostProps) {
             </Link>
           </div>
         </div>
+
+        {/* Tlacitko pro smazani - jen pro vlastni prispevky */}
         {post.user.id === user.id && (
           <PostMoreButton
             post={post}
@@ -59,13 +69,19 @@ export default function Post({ post }: PostProps) {
           />
         )}
       </div>
+
+      {/* Obsah prispevku s automatickym zpracovanim odkazu */}
       <Linkify>
         <div className="whitespace-pre-line break-words">{post.content}</div>
       </Linkify>
+
+      {/* Media prispevku (obrazky, videa) */}
       {!!post.attachments.length && (
         <MediaPreviews attachments={post.attachments} />
       )}
       <hr className="text-muted-foreground" />
+
+      {/* Tlacitka pro interakci (like, komentar, ulozeni) */}
       <div className="flex justify-between gap-5">
         <div className="flex items-center gap-5">
           <LikeButton
@@ -89,11 +105,16 @@ export default function Post({ post }: PostProps) {
           }}
         />
       </div>
+
+      {/* Komentare - zobrazuji se az po kliknuti */}
       {showComments && <Comments post={post} />}
     </article>
   );
 }
 
+/**
+ * Komponenta pro zobrazeni kolekce priloh
+ */
 interface MediaPreviewsProps {
   attachments: Media[];
 }
@@ -103,7 +124,7 @@ function MediaPreviews({ attachments }: MediaPreviewsProps) {
     <div
       className={cn(
         "flex flex-col gap-3",
-        attachments.length > 1 && "sm:grid sm:grid-cols-2",
+        attachments.length > 1 && "sm:grid sm:grid-cols-2", // Grid layout na vetsich obrazovkach
       )}
     >
       {attachments.map((m) => (
@@ -113,11 +134,15 @@ function MediaPreviews({ attachments }: MediaPreviewsProps) {
   );
 }
 
+/**
+ * Komponenta pro zobrazeni jedne prilohy (obraz/video)
+ */
 interface MediaPreviewProps {
   media: Media;
 }
 
 function MediaPreview({ media }: MediaPreviewProps) {
+  // Zobrazeni obrazku
   if (media.type === "IMAGE") {
     return (
       <Image
@@ -130,6 +155,7 @@ function MediaPreview({ media }: MediaPreviewProps) {
     );
   }
 
+  // Zobrazeni videa
   if (media.type === "VIDEO") {
     return (
       <div>
@@ -142,9 +168,13 @@ function MediaPreview({ media }: MediaPreviewProps) {
     );
   }
 
+  // Fallback pro nepodporovane typy
   return <p className="text-destructive">Media type not supported</p>;
 }
 
+/**
+ * Tlacitko pro zobrazeni komentaru
+ */
 interface CommentButtonProps {
   post: PostData;
   onClick: () => void;

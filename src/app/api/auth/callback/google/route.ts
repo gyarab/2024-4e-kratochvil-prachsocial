@@ -8,13 +8,19 @@ import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 
+/**
+ * API Route pro callback z Google OAuth prihlaseni
+ * Zpracovava prihlaseni pomoci Google uctu
+ */
 export async function GET(req: NextRequest) {
+  // Ziskani parametru z URL a cookies
   const code = req.nextUrl.searchParams.get("code");
   const state = req.nextUrl.searchParams.get("state");
 
   const storedState = cookies().get("state")?.value;
   const storedCodeVerifier = cookies().get("code_verifier")?.value;
 
+  // Kontrola platnosti parametru - ochrana proti CSRF
   if (
     !code ||
     !state ||
@@ -26,11 +32,13 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    // Vymena authorization code za access token
     const tokens = await google.validateAuthorizationCode(
       code,
       storedCodeVerifier,
     );
 
+    // Ziskani informaci o uzivateli z Google API
     const googleUser = await ky
       .get("https://www.googleapis.com/oauth2/v1/userinfo", {
         headers: {
@@ -39,6 +47,7 @@ export async function GET(req: NextRequest) {
       })
       .json<{ id: string; name: string }>();
 
+    // Kontrola, zda uzivatel uz existuje v databazi
     const existingUser = await prisma.user.findUnique({
       where: {
         googleId: googleUser.id,
@@ -46,6 +55,7 @@ export async function GET(req: NextRequest) {
     });
 
     if (existingUser) {
+      // Uzivatel existuje - vytvorime session a prihlasime ho
       const session = await lucia.createSession(existingUser.id, {});
       const sessionCookie = lucia.createSessionCookie(session.id);
       cookies().set(
@@ -53,6 +63,8 @@ export async function GET(req: NextRequest) {
         sessionCookie.value,
         sessionCookie.attributes,
       );
+
+      // Presmerovani na hlavni stranku
       return new Response(null, {
         status: 302,
         headers: {
@@ -61,11 +73,14 @@ export async function GET(req: NextRequest) {
       });
     }
 
+    // Uzivatel neexistuje - vytvorime noveho
     const userId = generateIdFromEntropySize(10);
 
     const username = slugify(googleUser.name) + "-" + userId.slice(0, 4);
 
+    // Pouziti transakce pro vytvoreni uzivatele v databazi i v Stream
     await prisma.$transaction(async (tx) => {
+      // Vytvoreni uzivatele v databazi
       await tx.user.create({
         data: {
           id: userId,
@@ -74,6 +89,8 @@ export async function GET(req: NextRequest) {
           googleId: googleUser.id,
         },
       });
+
+      // Vytvoreni uzivatele v Stream pro chat
       await streamServerClient.upsertUser({
         id: userId,
         username,
@@ -81,6 +98,7 @@ export async function GET(req: NextRequest) {
       });
     });
 
+    // Vytvoreni session a prihlaseni uzivatele
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(
@@ -89,6 +107,7 @@ export async function GET(req: NextRequest) {
       sessionCookie.attributes,
     );
 
+    // Presmerovani na hlavni stranku
     return new Response(null, {
       status: 302,
       headers: {

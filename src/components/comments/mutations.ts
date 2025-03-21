@@ -7,6 +7,13 @@ import {
 } from "@tanstack/react-query";
 import { useToast } from "../ui/use-toast";
 import { deleteComment, submitComment } from "./actions";
+
+/**
+ * Hook pro pridani komentare
+ * Zpracovava odeslani komentare na server a aktualizaci cache
+ *
+ * @param postId - ID prispevku ke kteremu se komentar pridava
+ */
 export function useSubmitCommentMutation(postId: string) {
   const { toast } = useToast();
 
@@ -15,10 +22,13 @@ export function useSubmitCommentMutation(postId: string) {
   const mutation = useMutation({
     mutationFn: submitComment,
     onSuccess: async (newComment) => {
+      // Query key pro komentare k prispevku
       const queryKey: QueryKey = ["comments", postId];
 
+      // Zruseni probihajicich dotazu
       await queryClient.cancelQueries({ queryKey });
 
+      // Aktualizace cache - pridani noveho komentare na konec prvni stranky
       queryClient.setQueryData<InfiniteData<CommentsPage, string | null>>(
         queryKey,
         (oldData) => {
@@ -39,6 +49,7 @@ export function useSubmitCommentMutation(postId: string) {
         },
       );
 
+      // Invalidace cache jen pro prazdne dotazy (kdyz nejsou data v cache)
       queryClient.invalidateQueries({
         queryKey,
         predicate(query) {
@@ -46,6 +57,7 @@ export function useSubmitCommentMutation(postId: string) {
         },
       });
 
+      // Zobrazeni uspesne zpravy
       toast({
         description: "Comment submitted",
       });
@@ -62,6 +74,10 @@ export function useSubmitCommentMutation(postId: string) {
   return mutation;
 }
 
+/**
+ * Hook pro smazani komentare
+ * Zpracovava smazani komentare na serveru a aktualizaci cache
+ */
 export function useDeleteCommentMutation() {
   const { toast } = useToast();
 
@@ -70,10 +86,13 @@ export function useDeleteCommentMutation() {
   const mutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: async (deletedComment) => {
+      // Query key pro komentare k prispevku
       const queryKey: QueryKey = ["comments", deletedComment.postId];
 
+      // Zruseni probihajicich dotazu
       await queryClient.cancelQueries({ queryKey });
 
+      // Aktualizace cache - odstraneni komentare
       queryClient.setQueryData<InfiniteData<CommentsPage, string | null>>(
         queryKey,
         (oldData) => {
@@ -89,6 +108,7 @@ export function useDeleteCommentMutation() {
         },
       );
 
+      // Zobrazeni uspesne zpravy
       toast({
         description: "Comment deleted!",
       });

@@ -9,7 +9,9 @@ interface EditProfileButtonProps {
   user: UserData;
 }
 
+// Komponenta pro zobrazeni tlacitka upravy profilu a dialogu pro upravu
 export default function EditProfileButton({ user }: EditProfileButtonProps) {
+  // State pro zobrazeni/skryti dialogu
   const [showDialog, setShowDialog] = useState(false);
 
   return (
