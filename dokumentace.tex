@@ -1,0 +1,1397 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[a4paper, left=3.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage{times}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\onehalfspacing
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\fontsize{18}{22}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\fontsize{14}{18}\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\fontsize{12}{15}\bfseries}{\thesubsubsection}{1em}{}
+
+\setlength{\parindent}{1cm}
+\setlength{\parskip}{6pt}
+
+\definecolor{codegray}{rgb}{0.95,0.95,0.95}
+\definecolor{codekeyword}{rgb}{0.13,0.29,0.53}
+\definecolor{codestring}{rgb}{0.31,0.60,0.02}
+\definecolor{codenumber}{rgb}{0.5,0,0.5}
+\definecolor{codebackground}{RGB}{245,245,245}
+\definecolor{codecomment}{rgb}{0.5,0.5,0.5}
+
+\lstdefinestyle{typescript}{
+  backgroundcolor=\color{codebackground},
+  commentstyle=\color{codecomment},
+  keywordstyle=\color{codekeyword},
+  numberstyle=\tiny\color{codenumber},
+  stringstyle=\color{codestring},
+  basicstyle=\ttfamily\small,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=2,
+  morekeywords={import, from, export, default, function, const, let, var, class, interface, type, return, if, else, for, while, do, switch, case, break, continue, try, catch, finally, async, await, new, this, super, extends, implements, throw, static, public, private, protected, get, set, null, undefined, true, false, as},
+  morestring=[b]',
+  morestring=[b]",
+  morestring=[b]`,
+  literate=%
+    {á}{{\'a}}1
+    {č}{{\v{c}}}1
+    {ď}{{\v{d}}}1
+    {é}{{\'e}}1
+    {ě}{{\v{e}}}1
+    {í}{{\'i}}1
+    {ň}{{\v{n}}}1
+    {ó}{{\'o}}1
+    {ř}{{\v{r}}}1
+    {š}{{\v{s}}}1
+    {ť}{{\v{t}}}1
+    {ú}{{\'u}}1
+    {ů}{{\r{u}}}1
+    {ý}{{\'y}}1
+    {ž}{{\v{z}}}1
+    {Á}{{\'A}}1
+    {Č}{{\v{C}}}1
+    {Ď}{{\v{D}}}1
+    {É}{{\'E}}1
+    {Ě}{{\v{E}}}1
+    {Í}{{\'I}}1
+    {Ň}{{\v{N}}}1
+    {Ó}{{\'O}}1
+    {Ř}{{\v{R}}}1
+    {Š}{{\v{S}}}1
+    {Ť}{{\v{T}}}1
+    {Ú}{{\'U}}1
+    {Ů}{{\r{U}}}1
+    {Ý}{{\'Y}}1
+    {Ž}{{\v{Z}}}1
+}
+
+\title{Dokumentace}
+\author{Matěj Kratochvíl}
+\date{March 2025}
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+
+        {\LARGE \textbf{Gymnázium, Praha 6, Arabská 14}} \\
+        \vspace{0.5cm}
+        \textcolor{gray}{\large Programování}
+        \vspace{2cm}\\
+        {\LARGE \textbf{MATURITNÍ PRÁCE}}\\
+        \vspace{2cm}
+        \vspace{1.5cm}
+        \begin{figure}[h]
+            \centering
+            \includegraphics[width = 0.4\textwidth]{images/gyarab.png}
+        \end{figure}
+        \vfill
+        \hspace{10cm} {\large 2024} \\
+        \hspace{10cm} {\large Matěj Kratochvíl}
+    \end{center}
+\end{titlepage}
+
+\thispagestyle{empty}
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+
+        {\Large \textbf{Gymnázium, Praha 6, Arabská 14}} \\
+        \vspace{0.5cm} 
+        \textcolor{gray}{\large Arabská 14, Praha 6, 160 00}\\
+        \vspace{5cm} 
+        {\Large \textbf{MATURITNÍ PRÁCE}}\\
+        \vspace{5cm}
+    \end{center}
+    \vspace{4cm}
+    \textcolor{darkgray}{\large
+    Předmět:\hspace{0.2cm} \textcolor{black}{Programování}\\
+    Téma:\hspace{0.2cm} \textcolor{black}{Sociální Síť}\\
+    \vspace{0.8cm} \\
+    Autor:\hspace{0.2cm} \textcolor{black}{Matěj Kratochvíl} \\
+    Třída:\hspace{0.2cm} \textcolor{black}{4.E} \\
+    Školní rok:\hspace{0.2cm} \textcolor{black}{2024/25} \\
+    Vedoucí práce:\hspace{0.2cm} \textcolor{black}{Mgr. Jan Lána} \\
+    Třídní učitel:\hspace{0.2cm} \textcolor{black}{Mgr. Blanka Hniličková} \\
+    }
+\end{titlepage}
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\vfill
+\begin{Large}
+\section*{\textbf{Čestné prohlášení:}}
+\end{Large}
+
+\par Prohlašuji, že jsem jediným autorem tohoto projektu, všechny citace jsou řádně označené a všechna použitá literatura a další zdroje jsou v práci uvedené. \par Tímto dle zákona 121/2000 Sb. (tzv. Autorský zákon) ve znění pozdějších předpisů uděluji bezúplatně škole Gymnázium, Praha 6, Arabská 14 oprávnění k výkonu práva na rozmnožování díla (§ 13) a práva na sdělování díla veřejnosti (§ 18) na dobu časově neomezenou a bez omezení územního rozsahu.
+\newline
+
+V Praze dne ……………………. \hspace{30pt}  ……………………………..
+
+\newpage
+\thispagestyle{empty}
+
+% Anotace
+\section*{Anotace}
+Tato práce představuje vývoj webové aplikace PrachSocial, která funguje jako plnohodnotná sociální síť. Aplikace umožňuje uživatelům vytvářet vlastní profily, publikovat příspěvky s textem a multimediálním obsahem, sledovat ostatní uživatele, komentovat a hodnotit příspěvky, a komunikovat prostřednictvím systému zasílání zpráv. Uživatelé mohou také vyhledávat obsah, ukládat oblíbené příspěvky a dostávat oznámení o aktivitách spojených s jejich účtem. Aplikace implementuje moderní přístup k vývoji webových systémů s využitím frameworku Next.js, Prisma ORM pro práci s databází a Stream Chat pro implementaci chatovacího systému.
+
+\section*{Abstract}
+This work presents the development of PrachSocial, a web application functioning as a comprehensive social network. The application allows users to create profiles, publish posts with text and multimedia content, follow other users, comment on and like posts, and communicate through a messaging system. Users can also search for content, save favorite posts, and receive notifications about activities related to their account. The application implements a modern approach to web system development using the Next.js framework, Prisma ORM for database operations, and Stream Chat for implementing the chat system.
+
+\newpage
+\thispagestyle{empty}
+% Zadání projektu
+\section*{Zadání projektu}
+Zadáním projektu bylo vytvořit sociální síť se všemi moderními webovými technologiemi a prvky. Bude umožňovat uživatelům sdílet příspěvky, lajkovat, komentovat a komunikovat přes zprávy. Bude obsahovat nekonečný feed, notifikace a správu uživatelského účtu s veřejným profilem, včetně autentizace pomocí hesla nebo Google účtu. Data budou zpracovávány přes Postgres databázi pomocí knihovny Prisma, s trending hashtagy, zmínkami a vyhledáváním jak příspěvků tak uživatelů. Bude postavena na frameworku Next.js s Tailwind CSS. Vše bude plně responzivní s možností přepínání mezi motivy. Všechny data a příspěvky budou optimalizované pro rychlé načítání, cachování a revalidaci.
+
+\newpage
+
+% Obsah
+\renewcommand{\contentsname}{Obsah}
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+% 1. Úvod
+\section{Úvod}
+
+V rámci ročníkového projektu jsem se rozhodl vytvořit vlastní sociální síť PrachSocial, která kombinuje klíčové funkce známých platforem jako jsou Twitter, Instagram a další.
+
+Cílem bylo vytvořit moderní webovou aplikaci, která bude nejen funkční, ale také dobře navržená z hlediska uživatelského rozhraní a architektury softwaru. Práce klade důraz na použití současných technologií a postupů ve vývoji webových aplikací, jako jsou React, Next.js, TypeScript a práce s různými API pro zajištění funkčnosti jako je ukládání souborů či chatování.
+
+Síť nabízí uživatelům možnost registrace buď pomocí Googlu nebo klasicky pomocí uživatelského jména a hesla. Po přihlášení mohou vytvářet příspěvky s textem, obrázky nebo videy, sledovat ostatní uživatele, komentovat a hodnotit příspěvky, a také komunikovat prostřednictvím přímých zpráv. Aplikace zahrnuje systém oznámení, který uživatele informuje o nových sledováních, komentářích a hodnoceních jejich příspěvků.
+
+Během vývoje jsem se snažil uplatnit moderní postupy v oblasti webového vývoje, jako je serverové vykreslování, které zlepšuje výkon a SEO, nebo použití typového jazyka TypeScript pro minimalizaci chyb. Aplikace také implementuje responzivní design, který zajišťuje optimální zobrazení na různých zařízeních od mobilních telefonů po velké monitory.
+
+\newpage
+% 2. Postup instalace
+\section{Postup instalace}
+
+Pro správnou instalaci a spuštění aplikace je třeba provést několik kroků, které jsou podrobně popsány níže.
+
+\subsection{Instalace závislostí}
+
+Prvním krokem je instalace všech potřebných závislostí. Vzhledem k specifickým požadavkům některých knihoven je nutné použít parametr \texttt{--legacy-peer-deps}:
+
+\begin{verbatim}
+npm i --legacy-peer-deps
+\end{verbatim}
+
+\subsection{Konfigurace externích služeb}
+
+Aplikace využívá několik externích služeb, které je potřeba nastavit:
+
+\subsubsection{UploadThing}
+
+Pro ukládání a zpracování souborů je využívána služba UploadThing:
+\begin{enumerate}
+  \item Vytvoření projektu na \href{https://uploadthing.com}{uploadthing.com}
+  \item Získání Secret a App ID v sekci Legacy
+  \item Zadání těchto hodnot do .env souboru
+\end{enumerate}
+
+\subsubsection{Stream}
+
+Pro funkčnost chatu je použita služba Stream:
+\begin{enumerate}
+  \item Vytvoření aplikace na \href{https://getstream.io}{getstream.io}
+  \item Získání Key a Secret z App Access Keys
+  \item Vypnutí Threads \& Replies v nastavení Chat Messaging → Channel Types → messaging
+  \item Zadání těchto hodnot do .env souboru
+\end{enumerate}
+
+\subsubsection{Google Cloud}
+
+Pro autentizaci přes Google:
+\begin{enumerate}
+  \item Vytvoření projektu v \href{https://console.cloud.google.com/}{Google Cloud Console}
+  \item Nastavení OAuth Consent Screen:
+    \begin{itemize}
+      \item Volba External
+      \item Vyplnění povinných polí
+      \item Přidání scope \texttt{.../auth/userinfo.email} a \texttt{.../auth/userinfo.profile}
+      \item Publikování projektu
+    \end{itemize}
+  \item Vytvoření OAuth client ID:
+    \begin{itemize}
+      \item Typ Web Application
+      \item Přidání \texttt{http://localhost:3000/api/auth/callback/google} do Authorized redirect URIs
+      \item Získání Client ID a Client secret
+      \item Zadání těchto hodnot do .env souboru
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Vytvoření souboru prostředí}
+
+Je třeba vytvořit soubor \texttt{.env} s následujícími proměnnými:
+
+\begin{verbatim}
+POSTGRES_USER="username"
+POSTGRES_HOST="host"
+POSTGRES_PASSWORD="password"
+POSTGRES_DATABASE="database"
+
+UPLOADTHING_SECRET='UploadThing Secret Key'
+NEXT_PUBLIC_UPLOADTHING_APP_ID='UploadThing App ID'
+
+NEXT_PUBLIC_STREAM_KEY='Stream Key'
+STREAM_SECRET='Stream Secret'
+
+GOOGLE_CLIENT_ID='CLIENT_ID.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET='CLIENT_SECRET'
+
+CRON_SECRET='Random String'
+NEXT_PUBLIC_BASE_URL='http://localhost:3000'
+\end{verbatim}
+
+\subsection{Nastavení databáze s Prisma}
+
+Pro inicializaci databáze je potřeba spustit:
+
+\begin{verbatim}
+npx prisma generate
+npx prisma db push
+\end{verbatim}
+
+\subsection{Nastavení Cron Job pro čištění nepoužívaných souborů} \small{\textit{Nevyžadováno}}
+
+Pro pravidelné čištění nepoužívaných uploadů je třeba nastavit cron úlohu, která bude volat API endpoint aplikace pro odstranění souborů, které nejsou spojeny s žádným příspěvkem nebo uživatelským avatarem. Tato funkce pomáhá udržovat čistotu úložiště a předchází hromadění nepotřebných dat.
+
+\begin{verbatim}
+crontab -e
+\end{verbatim}
+
+A přidat řádek:
+
+\begin{verbatim}
+0 2 * * * curl -X GET "http://localhost:3000/api/clear" 
+-H "Authorization: Bearer [CRON_SECRET]"
+\end{verbatim}
+
+Kde \texttt{[CRON\_SECRET]} je hodnota z .env souboru.
+
+\subsection{Spuštění vývojového serveru}
+
+Po dokončení všech předchozích kroků lze spustit vývojový server:
+
+\begin{verbatim}
+npm run dev
+\end{verbatim}
+
+Aplikace bude dostupná na adrese \texttt{http://localhost:3000}.
+
+\newpage
+% 3. Využité technologie
+\section{Využité technologie}
+
+\subsection{Základní technologie}
+
+\subsubsection{Next.js}
+
+Next.js je React framework, který umožňuje vytvářet moderní webové aplikace s podporou serverového vykreslování, statické generace a klientského vykreslování. V projektu využívám App Router, který je součástí Next.js 13+, nabízející intuitivní způsob organizace souborové struktury a routování. Next.js usnadňuje optimalizaci výkonu, SEO a nabízí jednoduché API pro implementaci serverových funkcí.
+
+\subsubsection{React}
+
+React je knihovna pro tvorbu uživatelských rozhraní, která umožňuje vytvářet znovupoužitelné komponenty. V projektu využívám nejnovější funkce Reactu jako jsou Hooks pro správu stavu a side-effectů. React je základním stavebním kamenem celé aplikace.
+
+\subsubsection{TypeScript}
+
+TypeScript je nadstavba JavaScriptu, která přidává statické typování. Díky němu jsem mohl odhalit mnoho chyb již během vývoje, zlepšit dokumentaci kódu a usnadnit refaktoring. TypeScript výrazně zlepšuje spolehlivost a udržitelnost kódu.
+
+\subsection{Styling a UI}
+
+\subsubsection{Tailwind CSS}
+
+Tailwind CSS je utility-first CSS framework, který umožňuje rychlé vytváření uživatelských rozhraní pomocí předdefinovaných tříd. Díky Tailwindu jsem mohl vytvořit konzistentní design napříč celou aplikací bez psaní vlastního CSS.
+
+\subsubsection{Shadcn/UI}
+
+Shadcn/UI je knihovna komponent pro React, která staví na Tailwind CSS. Poskytuje sadu vysoce přizpůsobitelných komponent, které jsem využil pro vytvoření formulářů, tlačítek, modálních oken a dalších UI prvků. Knihovna je založena na Radix UI, což zajišťuje dobrou přístupnost.
+
+\subsection{Správa dat}
+
+\subsubsection{Prisma}
+
+Prisma je moderní ORM (Object-Relational Mapping) pro Node.js a TypeScript. Umožňuje typově bezpečnou práci s databází a generuje typové definice na základě schématu databáze. V projektu používám Prisma pro všechny databázové operace, což značně zjednodušuje práci s daty.
+
+\subsubsection{PostgreSQL}
+
+PostgreSQL je výkonný open-source relační databázový systém. Zvolil jsem ho pro jeho robustnost, škálovatelnost a podporu fulltextového vyhledávání, které využívám pro implementaci vyhledávání v aplikaci.
+
+\subsubsection{TanStack Query}
+
+TanStack Query je knihovna pro správu stavů a práci s asynchronními daty v React aplikacích. Usnadňuje cachování dat, invalidaci cache, paginaci a další běžné úkoly při práci s API. V projektu je využívána především pro získávání dat ze serveru a implementaci nekonečného scrollování.
+
+\subsection{Autentizace a autorizace}
+
+\subsubsection{Lucia}
+
+Lucia je autentizační knihovna pro Next.js, která umožňuje implementovat bezpečnou správu uživatelských účtů a sessions. V projektu ji využívám pro autentizaci uživatelů jak pomocí hesla, tak i OAuth (Google).
+
+\subsubsection{Argon2}
+
+Argon2 je moderní hashovací algoritmus, který je odolný vůči útokům pomocí specializovaných hardwarových zařízení. Používám ho pro bezpečné ukládání hesel uživatelů.
+
+\subsection{Externí služby}
+
+\subsubsection{Stream Chat}
+
+Stream Chat je API a SDK pro implementaci real-time chatu. V projektu ji využívám pro implementaci systému zasílání přímých zpráv mezi uživateli. Služba zajišťuje real-time komunikaci, ukládání historie zpráv a správu chatovacích kanálů.
+
+\subsubsection{UploadThing}
+
+UploadThing je služba pro ukládání souborů, která je optimalizovaná pro použití s Next.js. Využívám ji pro nahrávání obrázků a videí do příspěvků a pro profilové obrázky uživatelů.
+
+\subsubsection{Google OAuth}
+
+Pro umožnění přihlášení pomocí Google účtu využívám Google OAuth 2.0. Díky tomu se uživatelé mohou do aplikace přihlásit jedním kliknutím bez nutnosti registrace.
+
+\subsection{Další použité knihovny}
+
+\begin{itemize}
+  \item \textbf{react-hook-form} - Knihovna pro práci s formuláři v Reactu
+  \item \textbf{zod} - Knihovna pro validaci schémat
+  \item \textbf{Tiptap} - WYSIWYG editor pro vytváření příspěvků
+  \item \textbf{react-cropper} - Implementace ořezávání obrázků
+  \item \textbf{react-intersection-observer} - Detekce viditelnosti elementů pro implementaci nekonečného scrollování
+\end{itemize}
+
+\newpage
+\section{Struktura projektu}
+
+Projekt je organizován podle moderních konvencí vývoje webových aplikací s využitím frameworku Next.js a jeho App Router architektury. Tato struktura umožňuje přehlednou organizaci kódu, jednodušší navigaci v projektu a efektivní oddělení zodpovědností jednotlivých komponent a modulů \citep{Vercel2023}. V této sekci podrobně popíšu strukturu projektu a vysvětlím účel jednotlivých souborů a adresářů.
+
+\subsection{Kořenový adresář projektu}
+
+V kořenovém adresáři projektu se nachází několik klíčových souborů a adresářů:
+
+\begin{itemize}
+  \item \textbf{src/} - Hlavní adresář zdrojového kódu aplikace
+  \item \textbf{public/} - Statické soubory, které jsou přímo dostupné přes webový server
+  \item \textbf{prisma/} - Obsahuje definice databázového schématu a migrační soubory
+  \item \textbf{next.config.mjs} - Konfigurační soubor pro Next.js
+  \item \textbf{package.json} - Seznam závislostí a skriptů pro správu projektu
+  \item \textbf{tsconfig.json} - Konfigurační soubor pro TypeScript
+  \item \textbf{tailwind.config.ts} - Konfigurační soubor pro Tailwind CSS
+  \item \textbf{components.json} - Konfigurační soubor pro komponenty z knihovny shadcn/ui
+  \item \textbf{.env} - Soubor s proměnnými prostředí (není součástí repozitáře)
+\end{itemize}
+
+\subsection{Adresář /src}
+
+Adresář \texttt{/src} obsahuje veškerý zdrojový kód aplikace. Je strukturován podle doporučení Next.js a dále rozdělen na několik klíčových podadresářů:
+
+\subsubsection{/app}
+
+Adresář \texttt{app} je jádrem aplikace v Next.js App Router architektuře. Obsahuje definice stránek, layoutů a API routes. Struktura tohoto adresáře přímo odpovídá URL struktuře aplikace \citep{Vercel2023AppDir}.
+
+\begin{itemize}
+  \item \textbf{layout.tsx} - Základní layout aplikace, který definuje společné části pro všechny stránky, jako jsou meta tagy, hlavičky a patičky. Obsahuje také globální providery, jako jsou \texttt{NextSSRPlugin}, \texttt{ReactQueryProvider} a \texttt{ThemeProvider}.
+  
+  \item \textbf{globals.css} - Globální CSS styly, včetně definice CSS proměnných pro Tailwind CSS a speciálních stylů pro stream-chat.
+  
+  \item \textbf{loading.tsx} - Komponenta zobrazovaná během načítání stránek.
+  
+  \item \textbf{not-found.tsx} - Stránka zobrazovaná při nenalezení požadované URL.
+  
+  \item \textbf{ReactQueryProvider.tsx} - Poskytuje kontext pro React Query v celé aplikaci.
+\end{itemize}
+
+\subsubsection{/(auth)}
+
+Tento adresář obsahuje komponenty a stránky spojené s autentizací. V Next.js je možné použít závorky v názvu adresáře pro seskupení souvisejících stránek bez ovlivnění URL cesty \citep{Vercel2023RouteGroups}.
+
+\begin{itemize}
+  \item \textbf{layout.tsx} - Definuje layout pro všechny stránky autentizace. Obsahuje logiku pro přesměrování přihlášených uživatelů.
+  
+  \item \textbf{/login/} - Adresář obsahující přihlašovací stránku:
+  \begin{itemize}
+    \item \textbf{page.tsx} - Definuje UI pro přihlášení.
+    \item \textbf{LoginForm.tsx} - Formulářová komponenta pro přihlášení.
+    \item \textbf{actions.ts} - Obsahuje serverové akce pro zpracování přihlášení.
+    \item \textbf{/google/} - Podadresář pro autentizaci přes Google:
+    \begin{itemize}
+      \item \textbf{GoogleSignInButton.tsx} - Komponent tlačítka pro Google přihlášení.
+      \item \textbf{route.ts} - API route pro Google OAuth flow.
+    \end{itemize}
+  \end{itemize}
+  
+  \item \textbf{/signup/} - Adresář obsahující registrační stránku s podobnou strukturou jako přihlašovací.
+  
+  \item \textbf{actions.ts} - Sdílené serverové akce pro autentizaci, jako je funkce pro odhlášení.
+\end{itemize}
+
+\subsubsection{/(main)}
+
+Tento adresář obsahuje hlavní část aplikace, která je přístupná pouze přihlášeným uživatelům.
+
+\begin{itemize}
+  \item \textbf{layout.tsx} - Hlavní layout pro přihlášené uživatele. Obsahuje navigační prvky, menu a ověření přihlášení.
+  
+  \item \textbf{navbar.tsx} - Komponenta horní navigační lišty.
+  
+  \item \textbf{MenuBar.tsx} - Komponenta bočního menu.
+  
+  \item \textbf{SessionProvider.tsx} - Poskytuje kontext pro informace o aktuálním uživateli.
+  
+  \item \textbf{page.tsx} - Hlavní stránka aplikace zobrazující feed příspěvků.
+  
+  \item \textbf{ForYouFeed.tsx} a \textbf{FollowingFeed.tsx} - Komponenty pro zobrazení feedů příspěvků.
+  
+  \item \textbf{/messages/} - Adresář obsahující funkcionalitu pro systém zpráv:
+  \begin{itemize}
+    \item \textbf{page.tsx} - Hlavní stránka zpráv.
+    \item \textbf{Chat.tsx} - Hlavní komponenta pro chat.
+    \item \textbf{ChatSidebar.tsx} - Boční panel pro seznam chatů.
+    \item \textbf{ChatChannel.tsx} - Komponenta pro zobrazení konkrétního chatu.
+    \item \textbf{NewChatDialog.tsx} - Dialog pro vytvoření nového chatu.
+    \item \textbf{useInitializeChatClient.ts} - Hook pro inicializaci Stream Chat klienta.
+  \end{itemize}
+  
+  \item \textbf{/notifications/} - Adresář pro funkcionalitu oznámení:
+  \begin{itemize}
+    \item \textbf{page.tsx} - Stránka s oznámeními.
+    \item \textbf{Notifications.tsx} - Komponenta pro zobrazení seznamu oznámení.
+    \item \textbf{Notification.tsx} - Komponenta pro jednotlivé oznámení.
+  \end{itemize}
+  
+  \item \textbf{/posts/[postId]/} - Dynamická cesta pro zobrazení konkrétního příspěvku \citep{Vercel2023DynamicRoutes}:
+  \begin{itemize}
+    \item \textbf{page.tsx} - Stránka detailu příspěvku s podporou pro SSR a metadaty.
+  \end{itemize}
+  
+  \item \textbf{/search/} - Adresář pro vyhledávací funkcionalitu:
+  \begin{itemize}
+    \item \textbf{page.tsx} - Stránka s výsledky vyhledávání.
+    \item \textbf{SearchResults.tsx} - Komponenta pro zobrazení výsledků vyhledávání.
+  \end{itemize}
+  
+  \item \textbf{/users/[username]/} - Dynamická cesta pro profily uživatelů:
+  \begin{itemize}
+    \item \textbf{page.tsx} - Stránka profilu uživatele.
+    \item \textbf{UserPosts.tsx} - Komponenta pro zobrazení příspěvků uživatele.
+    \item \textbf{EditProfileButton.tsx} a \textbf{EditProfileDialog.tsx} - Komponenty pro úpravu profilu.
+    \item \textbf{actions.ts} - Serverové akce pro profil uživatele.
+    \item \textbf{mutations.ts} - Definice mutací pro React Query.
+  \end{itemize}
+  
+  \item \textbf{/saved/} - Adresář pro uložené příspěvky:
+  \begin{itemize}
+    \item \textbf{page.tsx} - Stránka s uloženými příspěvky.
+    \item \textbf{Saved.tsx} - Komponenta pro zobrazení uložených příspěvků.
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{/api}
+
+Adresář \texttt{api} obsahuje API routes, které definují backend funkcionalitu aplikace. V Next.js je každý soubor \texttt{route.ts} automaticky zpřístupněn jako API endpoint podle své cesty v adresářové struktuře \citep{Vercel2023RouteHandlers}.
+
+\begin{itemize}
+  \item \textbf{/auth/} - Autentizační API endpointy:
+  \begin{itemize}
+    \item \textbf{/callback/google/route.ts} - Callback endpoint pro Google OAuth.
+  \end{itemize}
+  
+  \item \textbf{/posts/} - API endpointy pro práci s příspěvky:
+  \begin{itemize}
+    \item \textbf{for-you/route.ts} - Endpoint pro získání feedu "Pro vás".
+    \item \textbf{following/route.ts} - Endpoint pro získání feedu ze sledovaných uživatelů.
+    \item \textbf{saved/route.ts} - Endpoint pro získání uložených příspěvků.
+    \item \textbf{[postId]/} - Dynamická cesta pro operace nad konkrétním příspěvkem:
+    \begin{itemize}
+      \item \textbf{likes/route.ts} - Operace pro likes příspěvku.
+      \item \textbf{saved/route.ts} - Operace pro uložení příspěvku.
+      \item \textbf{comments/route.ts} - Operace pro komentáře příspěvku.
+    \end{itemize}
+  \end{itemize}
+  
+  \item \textbf{/users/} - API endpointy pro uživatele:
+  \begin{itemize}
+    \item \textbf{[userId]/} - Dynamická cesta pro operace nad konkrétním uživatelem:
+    \begin{itemize}
+      \item \textbf{followers/route.ts} - Operace pro sledování uživatelů.
+      \item \textbf{posts/route.ts} - Získání příspěvků konkrétního uživatele.
+    \end{itemize}
+    \item \textbf{username/[username]/route.ts} - Získání informací o uživateli podle username.
+  \end{itemize}
+  
+  \item \textbf{/notifications/} - API endpointy pro oznámení:
+  \begin{itemize}
+    \item \textbf{route.ts} - Získání seznamu oznámení.
+    \item \textbf{unread-count/route.ts} - Získání počtu nepřečtených oznámení.
+    \item \textbf{mark-read/route.ts} - Označení oznámení jako přečtených.
+  \end{itemize}
+  
+  \item \textbf{/messages/} - API endpointy pro zprávy:
+  \begin{itemize}
+    \item \textbf{unread-count/route.ts} - Získání počtu nepřečtených zpráv.
+  \end{itemize}
+  
+  \item \textbf{/search/route.ts} - Endpoint pro vyhledávání.
+  
+  \item \textbf{/get-token/route.ts} - Endpoint pro získání Stream Chat tokenu.
+  
+  \item \textbf{/clear/route.ts} - Endpoint pro cron job, který čistí nepoužívané soubory.
+  
+  \item \textbf{/uploadthing/} - Endpointy pro UploadThing službu:
+  \begin{itemize}
+    \item \textbf{core.ts} - Definice uploadovacích routerů.
+    \item \textbf{route.ts} - API endpointy pro UploadThing.
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{/components}
+
+Adresář \texttt{components} obsahuje znovupoužitelné React komponenty, které jsou využívány napříč aplikací. Jsou organizovány tematicky do podadresářů dle doporučených postupů v React \citep{React2023}.
+
+\begin{itemize}
+  \item \textbf{/ui/} - Předdefinované UI komponenty poskytnuté v základu
+  
+  \item \textbf{/posts/} - Komponenty pro práci s příspěvky:
+  \begin{itemize}
+    \item \textbf{Post.tsx} - Komponenta jednotlivého příspěvku.
+    \item \textbf{PostsLoadingSkeleton.tsx} - Komponenta pro načítací stav příspěvků.
+    \item \textbf{PostMoreButton.tsx} - Tlačítko s dalšími akcemi pro příspěvek.
+    \item \textbf{DeletePostDialog.tsx} - Dialog pro smazání příspěvku.
+    \item \textbf{actions.ts} - Serverové akce pro příspěvky.
+    \item \textbf{mutations.ts} - Definice mutací pro React Query.
+    \item \textbf{/editor/} - Adresář s komponentami pro editor příspěvků:
+    \begin{itemize}
+      \item \textbf{PostEditor.tsx} - Hlavní komponenta editoru příspěvků.
+      \item \textbf{useMediaUpload.ts} - Hook pro nahrávání médií.
+      \item \textbf{mutations.ts} - Mutace specifické pro editor.
+      \item \textbf{actions.ts} - Serverové akce pro editor.
+      \item \textbf{styles.css} - Speciální styly pro editor.
+    \end{itemize}
+  \end{itemize}
+  
+  \item \textbf{/comments/} - Komponenty pro komentáře:
+  \begin{itemize}
+    \item \textbf{Comments.tsx} - Komponenta pro zobrazení všech komentářů.
+    \item \textbf{Comment.tsx} - Komponenta jednotlivého komentáře.
+    \item \textbf{CommentInput.tsx} - Komponenta pro zadávání nových komentářů.
+    \item \textbf{CommentMoreButton.tsx} - Tlačítko s dalšími akcemi pro komentář.
+    \item \textbf{DeleteCommentDialog.tsx} - Dialog pro smazání komentáře.
+    \item \textbf{actions.ts} - Serverové akce pro komentáře.
+    \item \textbf{mutations.ts} - Definice mutací pro komentáře.
+  \end{itemize}
+  
+  \item \textbf{UserAvatar.tsx} - Komponenta pro zobrazení avataru uživatele.
+  \item \textbf{UserButton.tsx} - Komponenta tlačítka uživatele v navigaci.
+  \item \textbf{UserTooltip.tsx} - Komponenta pro tooltip s informacemi o uživateli.
+  \item \textbf{UserLinkWithTooltip.tsx} - Komponenta odkazu na uživatele s tooltipem.
+  \item \textbf{FollowButton.tsx} - Komponenta tlačítka pro sledování uživatele.
+  \item \textbf{FollowerCount.tsx} - Komponenta pro zobrazení počtu sledujících.
+  \item \textbf{SearchField.tsx} - Komponenta vyhledávacího pole.
+  \item \textbf{PasswordInput.tsx} - Specializovaná komponenta pro zadávání hesla.
+  \item \textbf{Linkify.tsx} - Komponenta pro detekci a zvýraznění odkazů a zmínek v textu.
+  \item \textbf{LoadingButton.tsx} - Tlačítko s indikátorem načítání.
+  \item \textbf{InfiniteScrollContainer.tsx} - Komponenta pro nekonečné scrollování.
+  \item \textbf{TrendsSidebar.tsx} - Komponenta s trendy a doporučenými uživateli.
+  \item \textbf{CropImageDialog.tsx} - Dialog pro ořezávání obrázků.
+\end{itemize}
+
+\subsubsection{/lib}
+
+Adresář \texttt{lib} obsahuje pomocné funkce, utility a definice typů, které jsou používány napříč aplikací. Tento vzor je doporučován v Next.js dokumentaci pro oddělení pomocných funkcí od komponent \citep{Vercel2023ProjectOrganization}.
+
+\begin{itemize}
+  \item \textbf{types.ts} - Definice TypeScript typů a rozhraní používaných v aplikaci.
+  \item \textbf{utils.ts} - Pomocné utility jako formátování data, čísel, a další.
+  \item \textbf{validation.ts} - Schémata pro validaci formulářů pomocí Zod.
+  \item \textbf{prisma.ts} - Singleton instance Prisma klienta. Implementuje návrhový vzor Singleton pro zabránění vytváření více instancí Prisma klienta \citep{Prisma2023}.
+  \item \textbf{ky.ts} - Konfigurovaná instance HTTP klienta Ky.
+  \item \textbf{stream.ts} - Konfigurovaná instance Stream Chat klienta pro server.
+  \item \textbf{uploadthing.ts} - Utility pro UploadThing službu.
+\end{itemize}
+
+\subsubsection{/hooks}
+
+Adresář \texttt{hooks} obsahuje vlastní React hooks, které zapouzdřují znovupoužitelnou logiku dle doporučených postupů Reactu \citep{React2023Hooks}.
+
+\begin{itemize}
+  \item \textbf{useDebounce.ts} - Hook pro debouncing vstupu, inspirovaný řešením na Stack Overflow \citep{StackOverflow2021}.
+  \item \textbf{useFollowerInfo.ts} - Hook pro získání informací o sledujících.
+\end{itemize}
+
+\subsubsection{auth.ts}
+
+Soubor \texttt{/src/auth.ts} obsahuje konfiguraci autentizační knihovny Lucia, definice adaptérů pro Prisma a utility pro validaci požadavků \citep{Lucia2023}.
+
+\subsection{/prisma}
+
+Adresář \texttt{prisma} obsahuje definice databázového schématu a migrace.
+
+\begin{itemize}
+  \item \textbf{schema.prisma} - Definice databázového schématu v Prisma formátu \citep{Prisma2023Schema}, včetně modelů pro:
+  \begin{itemize}
+    \item Uživatele (User)
+    \item Relace (Session)
+    \item Příspěvky (Post)
+    \item Média (Media)
+    \item Komentáře (Comment)
+    \item Lajky (Like)
+    \item Uložené příspěvky (Saved)
+    \item Sledování (Follow)
+    \item Oznámení (Notification)
+  \end{itemize}
+\end{itemize}
+
+\subsection{Typy souborů a jejich význam}
+
+V Next.js architektuře mají různé typy souborů specifický význam \citep{Vercel2023FileConventions}:
+
+\begin{itemize}
+  \item \textbf{page.tsx} - Definuje UI komponenty pro stránku na dané URL cestě. Tyto soubory jsou automaticky dostupné jako route v aplikaci.
+  
+  \item \textbf{layout.tsx} - Definuje sdílený layout pro stránky nebo skupinu stránek. Layouts se vnořují a můžou být definovány na různých úrovních.
+  
+  \item \textbf{route.ts} - Definuje API endpoint na dané URL cestě s možností implementace různých HTTP metod (GET, POST, PUT, DELETE).
+  
+  \item \textbf{actions.ts} - Obsahuje serverové akce, které mohou být volány z klientského kódu pomocí Server Actions API v Next.js.
+  
+  \item \textbf{mutations.ts} - Definuje mutace pro React Query, které zapouzdřují logiku pro změnu dat na serveru.
+  
+  \item \textbf{loading.tsx} - Definuje UI komponent, který se zobrazí během načítání stránky. Je součástí Suspense API v Next.js.
+  
+  \item \textbf{not-found.tsx} - Definuje UI komponent, který se zobrazí, když není nalezena odpovídající stránka. Nahrazuje stránku Error kódu 404.
+\end{itemize}
+
+\subsection{Speciální adresářové konvence}
+
+Next.js používá několik speciálních konvencí pro adresáře \citep{Vercel2023RouteGroups}:
+
+\begin{itemize}
+  \item \textbf{(skupiny)} - Adresáře v závorkách jsou používány pro seskupení souvisejících stránek nebo layoutů bez ovlivnění URL cesty.
+  
+  \item \textbf{[dynamické-parametry]} - Adresáře v hranatých závorkách definují dynamické segmenty URL cesty, které mohou být přístupné jako parametry v komponentách.
+\end{itemize}
+
+\newpage
+\section{Implementace klíčových funkcí}
+
+\subsection{Autentizace a autorizace}
+
+Systém autentizace je implementován pomocí knihovny Lucia \citep{Lucia2023}, která poskytuje moderní a bezpečný způsob správy uživatelských sesí. Systém podporuje dva způsoby přihlášení:
+
+\begin{itemize}
+    \item Klasické přihlášení pomocí uživatelského jména a hesla
+    \item OAuth přihlášení přes Google účet
+\end{itemize}
+
+Hesla uživatelů jsou hashována pomocí algoritmu Argon2 \citep{Argon2GitHub}, který je považován za jeden z nejbezpečnějších hashovacích algoritmů v současnosti. Pro implementaci Google OAuth je využita knihovna Arctic \citep{ArcticGitHub}.
+
+\subsubsection{Konfigurace Lucia}
+
+Základní konfigurace Lucia je umístěna v souboru \texttt{src/auth.ts}:
+
+\begin{lstlisting}[style=typescript]
+export const lucia = new Lucia(adapter, {
+  sessionCookie: {
+    expires: false,
+    attributes: {
+      secure: process.env.NODE_ENV === "production",
+    },
+  },
+  getUserAttributes(databaseUserAttributes) {
+    return {
+      id: databaseUserAttributes.id,
+      username: databaseUserAttributes.username,
+      displayName: databaseUserAttributes.displayName,
+      avatarUrl: databaseUserAttributes.avatarUrl,
+      googleId: databaseUserAttributes.googleId,
+    };
+  },
+});
+\end{lstlisting}
+
+Tento kód vytváří instanci Lucia s použitím PrismaAdapter, který propojuje Lucia s naší databází. Konfigurace také specifikuje, jaké atributy uživatele budou dostupné v objektu User.
+
+\subsubsection{Implementace přihlašovacího formuláře}
+
+Přihlašovací formulář je implementován s využitím knihovny React Hook Form \citep{ReactHookForm} a Zod \citep{ZodGitHub} pro validaci. Formulář automaticky validuje vstupní údaje a zobrazuje chybové zprávy uživateli v případě neplatných údajů.
+
+Samotný proces přihlášení je realizován pomocí serverové akce, která ověří přihlašovací údaje proti databázi, vytvoří novou session pomocí Lucia a nastaví session cookie pro uživatele. V případě úspěšného přihlášení je uživatel přesměrován na hlavní stránku aplikace, v případě neúspěchu je zobrazena chybová zpráva.
+
+\subsubsection{Implementace Google OAuth}
+
+Pro implementaci přihlášení přes Google jsou využity dva hlavní endpointy, z nichž jeden inicializuje proces autentizace a druhý zpracovává callback od Google OAuth serveru. V callback endpointu je implementováno zpracování OAuth tokenu, získání informací o uživateli z Google API a vytvoření nebo aktualizace uživatelského účtu v databázi.
+
+Tímto způsobem mohou uživatelé využít své existující Google účty pro rychlé přihlášení bez nutnosti registrace a pamatování dalšího hesla.
+
+\subsection{Práce s příspěvky}
+
+Příspěvky jsou centrálním prvkem aplikace. Implementace zahrnuje vytváření, zobrazování, upravování a mazání příspěvků. Zásadní je také efektivní načítání příspěvků v nekonečném scrollu.
+
+\subsubsection{Editor příspěvků}
+
+Editor příspěvků využívá knihovnu Tiptap \citep{Tiptap2023} pro formátování textu a specializovaný hook \texttt{useMediaUpload} pro nahrávání médií. Tento přístup umožňuje uživatelům vytvářet bohaté příspěvky s formátovaným textem a multimediálním obsahem.
+
+\begin{lstlisting}[style=typescript]
+const editor = useEditor({
+  extensions: [
+    StarterKit.configure({
+      bold: false,
+      italic: false,
+    }),
+    Placeholder.configure({
+      placeholder: "Write something...",
+    }),
+  ],
+});
+\end{lstlisting}
+
+\subsubsection{Nahrávání médií}
+
+Nahrávání médií je implementováno pomocí služby UploadThing \citep{UploadThing}. Na straně serveru jsou definovány uploadovací routery, které zpracovávají nahrané soubory, provádějí validaci a vytvářejí záznamy v databázi. Implementace poskytuje uživatelům možnost nahrávat obrázky a videa, sledovat průběh nahrávání a zobrazuje náhledy nahraných médií.
+
+Pro použití v příspěvcích byla vytvořena komponenta MediaPreviews, která efektivně zobrazuje nahraná média v různých konfiguracích a podporuje responzivní design.
+
+\subsection{Implementace vyhledávání}
+
+Vyhledávací funkce umožňuje uživatelům hledat příspěvky a uživatele podle klíčových slov. Implementace využívá fulltextové vyhledávání v PostgreSQL \citep{PostgreSQL2023FTS}.
+
+\subsubsection{Vyhledávací pole}
+
+Komponenta \texttt{SearchField.tsx} poskytuje uživatelské rozhraní pro zadávání vyhledávacích dotazů a předává je do URL parametrů pro zpracování na stránce výsledků vyhledávání:
+
+\begin{lstlisting}[style=typescript]
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const q = (form.q as HTMLInputElement).value.trim();
+    if (!q) return;
+    router.push(`/search?q=${encodeURIComponent(q)}`);
+  }
+\end{lstlisting}
+
+\subsubsection{Backend implementace vyhledávání}
+
+Na backendu je vyhledávání implementováno s využitím fulltextového vyhledávání PostgreSQL přes Prisma ORM. Dotaz je rozdělen na jednotlivá slova a převeden do formátu, který PostgreSQL používá pro fulltextové vyhledávání. Výsledky jsou následně seřazeny podle relevance a vráceny klientovi.
+
+Vyhledávání bere v úvahu obsah příspěvků, uživatelská jména a zobrazovaná jména uživatelů, čímž poskytuje komplexní výsledky.
+
+\subsection{Hashtagy a zmínky v příspěvcích}
+
+Důležitou součástí sociální sítě je možnost označit uživatele pomocí zmínek (@) a vytvářet hashtagy (\#). Implementace této funkcionality zahrnuje detekci a zvýraznění těchto prvků v textu a jejich propojení s příslušnými stránkami.
+
+\subsubsection{Detekce a zvýraznění v textu}
+
+Pro detekci a zvýraznění odkazů, hashtagů a zmínek je implementována komponenta \texttt{Linkify}, která využívá regulární výrazy a knihovnu \texttt{react-linkify-it} pro transformaci prostého textu na interaktivní odkazy:
+
+\begin{lstlisting}[style=typescript]
+function LinkifyUsername({ children }: LinkifyProps) {
+  return (
+    <LinkIt
+      regex={/(@[a-zA-Z0-9_-]+)/}
+      component={(match, key) => (
+        <UserLinkWithTooltip key={key} username={match.slice(1)}>
+          {match}
+        </UserLinkWithTooltip>
+      )}
+    >
+      {children}
+    </LinkIt>
+  );
+}
+\end{lstlisting}
+
+\subsubsection{Implementace trendů}
+
+Pro zobrazení populárních hashtagů je implementována komponenta \texttt{TrendingSidebar}, která pomocí SQL dotazu extrahuje a agreguje hashtagy z příspěvků. Výsledky jsou cachovány pomocí funkce \texttt{unstable\_cache} pro lepší výkon.
+
+\newpage
+\subsection{Systém oznámení}
+
+Systém oznámení informuje uživatele o aktivitách souvisejících s jejich účtem, jako jsou nové komentáře, lajky a sledování. 
+
+\subsubsection{Typy oznámení}
+
+V databázovém schématu jsou definovány tři typy oznámení pomocí enum:
+
+\begin{verbatim}
+enum NotificationType {
+  LIKE
+  FOLLOW
+  COMMENT
+}
+\end{verbatim}
+
+\subsubsection{Vytváření oznámení}
+
+Oznámení jsou vytvářena současně s akcemi, které je spouští. Například při přidání lajku k příspěvku je v rámci jedné transakce vytvořen jak samotný lajk, tak i oznámení pro autora příspěvku (pokud autor není stejný uživatel, který dal lajk). Tento přístup zajišťuje atomicitu operací a konzistenci dat.
+
+\subsubsection{Zobrazení oznámení}
+
+Komponenta \texttt{Notifications.tsx} zobrazuje seznam oznámení s nekonečným scrollováním a automaticky označuje oznámení jako přečtená při jejich zobrazení. Jednotlivá oznámení jsou renderována pomocí komponenty \texttt{Notification.tsx}, která na základě typu oznámení zobrazuje odpovídající ikonu, text a odkaz.
+
+\subsubsection{Počítání nepřečtených oznámení}
+
+Pro zobrazení počtu nepřečtených oznámení je implementován API endpoint a komponenta
+
+\texttt{Notifications-}
+\texttt{Button.tsx}, která tento počet zobrazuje v navigačním menu. Počet nepřečtených oznámení je pravidelně aktualizován pomocí React Query.
+
+\newpage
+\section{Uživatelské rozhraní}
+
+Uživatelské rozhraní aplikace bylo navrženo s důrazem na přehlednost, použitelnost a responzivitu. Vzhledem k tomu, že se jedná o sociální síť, bylo klíčové vytvořit intuitivní prostředí, které umožní uživatelům snadno konzumovat obsah a interagovat s ním.
+
+\subsection{Návrh a implementace UI}
+
+Pro návrh uživatelského rozhraní jsem zvolil kombinaci moderních přístupů a nástrojů. Základem je knihovna Tailwind CSS \citep{TailwindCSS}, která umožňuje rychlý a konzistentní vývoj UI pomocí utility tříd. Na ní je postavena knihovna komponent Shadcn UI \citep{Shadcn}, která poskytuje přístupné a esteticky příjemné UI komponenty.
+
+\subsubsection{Systém komponent}
+
+Aplikace využívá komponentovou architekturu, kde každá UI komponenta je zodpovědná za specifickou část rozhraní:
+
+\begin{itemize}
+    \item \textbf{Navigační komponenty} - Navbar, MenuBar, podpora pro mobilní i desktopová zařízení
+    \item \textbf{Komponenty příspěvků} - Post, PostEditor, PostMoreButton
+    \item \textbf{Formulářové komponenty} - Input, Textarea, PasswordInput, SearchField
+    \item \textbf{Dialogová okna} - EditProfileDialog, DeletePostDialog, NewChatDialog
+    \item \textbf{Interaktivní prvky} - FollowButton, LikeButton, SaveButton, UserTooltip
+    \item \textbf{Stránkování a načítání} - InfiniteScrollContainer, PostsLoadingSkeleton
+\end{itemize}
+
+Všechny komponenty jsou navrženy tak, aby byly znovupoužitelné a konzistentní v celé aplikaci.
+
+\newpage
+\subsubsection{Designový systém}
+
+Designový systém je založen na proměnných v CSS, které definují barvy, zaoblení, stíny a další vizuální aspekty aplikace. Díky tomu je možné snadno změnit vzhled aplikace a implementovat různé barevné motivy.
+
+Proměnné jsou definovány v souboru \texttt{globals.css}:
+
+\begin{verbatim}
+@layer base {
+  :root {
+  // Proměnné základních barev a zvýraznění
+  }
+
+  .dark {
+  // Proměnné pro tmavý režim
+  }
+}
+\end{verbatim}
+
+\subsection{Responzivní design}
+
+Aplikace je plně responzivní a přizpůsobuje se různým velikostem obrazovek od mobilních telefonů po velké desktopové monitory. Implementace využívá breakpointy Tailwind CSS \citep{TailwindCSS} a speciální komponenty pro různé velikosti obrazovek.
+
+\subsubsection{Mobilní zobrazení}
+
+Na mobilních zařízeních je menu zobrazeno jako spodní navigační lišta a obsah zabírá celou šířku obrazovky. Některé méně důležité prvky jsou skryty nebo zmenšeny, aby se maximalizoval prostor pro obsah.
+
+\subsubsection{Tablet a desktop}
+
+Na větších obrazovkách se menu přesouvá na levou stranu jako boční panel, což umožňuje lepší přehled a navigaci. Obsah je zobrazen ve středu s dostatečnými okraji pro lepší čitelnost a na pravé straně se zobrazuje panel s trendy a doporučenými uživateli.
+
+\newpage
+\subsubsection{Implementace breakpointů}
+
+Pro zajištění správného zobrazení na různých zařízeních jsou využity CSS třídy Tailwind s breakpointy:
+
+\begin{lstlisting}[style=typescript]
+<div className="hidden sm:block lg:w-64">
+  {/* Obsah viditelný pouze na obrazovkách větších než sm */}
+</div>
+
+<div className="block sm:hidden">
+  {/* Obsah viditelný pouze na mobilních zařízeních */}
+</div>
+\end{lstlisting}
+
+\subsection{Podpora světlého a tmavého režimu}
+
+Aplikace podporuje světlý a tmavý režim, mezi kterými si uživatel může přepínat. Implementace využívá knihovnu next-themes \citep{NextThemes}, která poskytuje React hook \texttt{useTheme} pro práci s tématem.
+
+\subsubsection{Přepínání témat}
+Přepínač témat je implementován v uživatelském menu, kde si uživatel může vybrat mezi systémovým, světlým nebo tmavým režimem. Při změně tématu se okamžitě aktualizuje vzhled celé aplikace díky CSS proměnným a Tailwind CSS třídám.
+
+\begin{lstlisting}[style=typescript]
+<DropdownMenuSubContent>
+  <DropdownMenuItem onClick={() => setTheme("system")}>
+    <Monitor className="mr-2 size-4" />
+    System Default
+    {theme === "system" && <Check />}
+  </DropdownMenuItem>
+  {/* Světlý a tmavý motiv */}
+</DropdownMenuSubContent>
+
+\end{lstlisting}
+
+\subsection{Animace a přechody}
+
+Pro lepší uživatelský zážitek aplikace využívá jemné animace a přechody, které poskytují vizuální zpětnou vazbu na akce uživatele. Tyto animace jsou implementovány pomocí CSS transitions a plugin tailwindcss-animate.
+
+\begin{itemize}
+    \item Fade-in efekt při načítání nových příspěvků
+    \item Přechody při otevírání a zavírání dialogů
+    \item Plynulé přechody při změně témat
+    \item Animace tlačítek při najetí myší a kliknutí
+\end{itemize}
+
+\subsection{Uživatelská zkušenost (UX)}
+
+Kromě samotného UI byl kladen důraz i na celkovou uživatelskou zkušenost:
+
+\begin{itemize}
+    \item \textbf{Okamžitá zpětná vazba} - Optimistické aktualizace UI při akcích jako like, follow nebo save
+    \item \textbf{Toast notifikace} - Informují uživatele o výsledku jejich akcí (úspěch, chyba)
+    \item \textbf{Skeleton loaders} - Zobrazují se během načítání obsahu, aby uživatel věděl, že se něco děje
+    \item \textbf{Nekonečné scrollování} - Umožňuje plynulé procházení obsahu bez nutnosti manuálního přecházení mezi stránkami
+    \item \textbf{Tooltips} - Poskytují dodatečné informace o uživatelích a prvcích UI
+\end{itemize}
+
+Tyto prvky společně vytvářejí plynulou a intuitivní uživatelskou zkušenost, která je klíčová pro sociální síť, kde uživatelé tráví významné množství času procházením obsahu a interakcí s ním.
+
+\newpage
+\section{Databázová vrstva}
+
+Databázová vrstva aplikace je postavena na PostgreSQL a ORM Prisma, což poskytuje typově bezpečný přístup k datům, snadnou definici schématu a efektivní dotazování. V této sekci popisuji návrh databázového schématu, implementaci relací mezi entitami a přístup k datům v aplikaci.
+
+\subsection{Schéma databáze}
+
+Databázové schéma je definováno v souboru \texttt{prisma/schema.prisma} pomocí Prisma Schema Language \citep{Prisma2023Schema}. Hlavní entity v databázi zahrnují:
+
+\begin{itemize}
+    \item \textbf{User} - Uživatelské účty
+    \item \textbf{Session} - Uživatelské relace pro autentizaci
+    \item \textbf{Post} - Příspěvky uživatelů
+    \item \textbf{Media} - Mediální soubory připojené k příspěvkům
+    \item \textbf{Comment} - Komentáře k příspěvkům
+    \item \textbf{Like} - Lajky na příspěvky
+    \item \textbf{Saved} - Uložené příspěvky
+    \item \textbf{Follow} - Vztahy sledování mezi uživateli
+    \item \textbf{Notification} - Oznámení pro uživatele
+\end{itemize}
+
+\subsection{Vztahy mezi entitami}
+
+Databázové schéma obsahuje několik typů vztahů mezi entitami:
+
+\subsubsection{One-to-Many vztahy}
+
+Příkladem One-to-Many vztahu je vztah mezi uživatelem a příspěvky. Jeden uživatel může mít mnoho příspěvků, ale každý příspěvek patří právě jednomu uživateli. Tento vztah je implementován pomocí cizího klíče v tabulce příspěvků.
+
+\subsubsection{Many-to-Many vztahy}
+
+Vztah sledování mezi uživateli je příkladem Many-to-Many vztahu. Uživatel může sledovat mnoho jiných uživatelů a zároveň být sledován mnoha uživateli. Tento vztah je implementován pomocí spojovací tabulky `Follow`, která obsahuje dvojici cizích klíčů odkazujících na tabulku uživatelů.
+
+\subsection{Přístup k datům}
+
+Pro přístup k datům v databázi využívá aplikace Prisma Client, který je inicializován jako singleton pro zajištění efektivní správy připojení k databázi. Toto řešení zabraňuje vytváření mnoha instancí klienta, což by mohlo vést k problémům s výkonem.
+
+\subsubsection{Dotazování dat}
+
+Prisma poskytuje typově bezpečné API pro dotazování dat. Příklad dotazu pro získání příspěvků s vnořenými relacemi ukazuje, jak lze efektivně načítat související data v jednom požadavku:
+
+\begin{lstlisting}[style=typescript]
+const posts = await prisma.post.findMany({
+  include: {
+    user: {
+      select: getUserDataSelect(user.id),
+    },
+    attachments: true,
+    likes: {
+      where: {
+        userId: user.id,
+      },
+      select: {
+        userId: true,
+      },
+    },
+  },
+});
+\end{lstlisting}
+
+\subsubsection{Transakce}
+
+Pro zajištění atomicity operací, které ovlivňují více tabulek, využívá aplikace databázové transakce. To je důležité například při vytváření sledování uživatele, kdy je zároveň vytvořeno oznámení.
+
+\subsection{Vyhledávání v databázi}
+
+Aplikace implementuje fulltextové vyhledávání pomocí funkcí PostgreSQL. To umožňuje efektivní vyhledávání v obsahu příspěvků a údajích uživatelů. 
+
+\subsection{Optimalizace výkonu}
+
+Pro zajištění dobrého výkonu při práci s databází jsou implementovány různé optimalizace včetně selektivního dotazování, efektivního stránkování a použití indexů.
+
+\newpage
+\section{Výzvy a řešení}
+
+Během vývoje aplikace jsem se setkal s různými technickými výzvami, které jsem musel vyřešit. V této sekci popisuji některé z nejzajímavějších problémů a jejich řešení.
+
+\subsection{Implementace real-time chatu}
+
+Jednou z největších výzev bylo implementovat real-time chat, který by umožňoval uživatelům komunikovat bez nutnosti obnovení stránky.
+
+\subsubsection{Problém}
+
+Implementace real-time funkcionality od základu by vyžadovala vytvoření a správu WebSocket připojení, řešení offline zpráv a synchronizace historie, implementaci presence (kdo je online) a správu chatovacích kanálů.
+
+\subsubsection{Řešení}
+Rozhodl jsem se využít službu Stream Chat \citep{StreamChat}, která poskytuje kompletní řešení pro real-time chat. Implementace zahrnovala integraci Stream Chat SDK, vytvoření serverového endpointu pro generování autentizačních tokenů, synchronizaci uživatelských profilů a přizpůsobení vzhledu.
+
+Klíčovou součástí řešení byl hook `useInitializeChatClient`, který zajišťuje inicializaci a správu Stream Chat klienta:
+
+\begin{lstlisting}[style=typescript]
+// Inicializace klienta s API klíčem
+const client = StreamChat.getInstance(process.env.NEXT_PUBLIC_STREAM_KEY!);
+// Připojení uživatele s jeho údaji a autentizačním tokenem
+client.connectUser(
+  { id: user.id, username: user.username, /* další údaje */ },
+  async () => kyInstance.get(`/api/get-token`).json().then(data => data.token)
+)
+.then(() => setChatClient(client));
+\end{lstlisting}
+
+Tento přístup mi umožnil rychle implementovat komplexní funkci chatu bez nutnosti řešit nízkoúrovňové detaily WebSocket komunikace a správy stavu.
+
+\subsection{Optimalizace načítání dat}
+
+Další výzvou bylo efektivní načítání dat, zejména při implementaci nekonečného scrollování a cachování dat pro lepší výkon.
+
+\subsubsection{Problém}
+
+Při implementaci nekonečného scrollování jsem narazil na několik problémů, jako je efektivní načítání dalších stránek dat bez duplicit, aktualizace již načtených položek při změnách a zachování stavu scrollování při navigaci.
+
+\subsubsection{Řešení}
+
+Pro řešení těchto problémů jsem použil knihovnu TanStack Query (dříve React Query) \citep{TanStackQuery}, která poskytuje sofistikované nástroje pro správu asynchronních dat. Implementoval jsem `useInfiniteQuery` pro načítání dalších stránek dat při scrollování, využil jsem cachování dotazů a implementoval selektivní invalidaci cache při změnách dat.
+
+Pro detekci scrollování k dolnímu okraji stránky jsem vytvořil komponentu `InfiniteScrollContainer`, která využívá knihovnu `react-intersection-observer` pro sledování viditelnosti elementů:
+
+\begin{lstlisting}[style=typescript]
+const { ref } = useInView({
+rootMargin: "200px",
+onChange: (inView) => {
+  if (inView) {
+    onBottomReached();
+  }
+},
+});
+\end{lstlisting}
+
+\subsection{Nahrávání a zpracování médií}
+
+Implementace nahrávání médií představovala další výzvu, zejména s ohledem na uživatelský zážitek a efektivitu.
+
+\subsubsection{Řešení}
+
+Pro nahrávání souborů jsem využil službu UploadThing \citep{UploadThing}, která poskytuje efektivní řešení pro nahrávání souborů s přímým uploadem do cloud storage. Pro zpracování obrázků před nahráním jsem implementoval komponentu pro ořezávání s využitím knihovny `react-cropper`.
+
+Pro sledování průběhu nahrávání jsem vytvořil specializovaný hook `useMediaUpload`, který poskytuje bohaté API pro práci s nahrávanými soubory včetně progresových indikátorů a možnosti odstranění souborů před odesláním.
+
+\subsection{Optimalizace výkonu na mobilních zařízeních}
+
+Vzhledem k tomu, že sociální síť je často používána na mobilních zařízeních, bylo důležité optimalizovat výkon i na méně výkonných zařízeních.
+
+\subsubsection{Řešení}
+
+Pro optimalizaci výkonu jsem implementoval lazy loading komponent a dat, code splitting, optimalizaci obrázků pomocí Next.js Image komponenty a skeleton loading místo tradičních loaderů.
+
+Skeleton loading poskytuje lepší uživatelský zážitek tím, že místo klasického spinneru zobrazuje strukturu obsahu, který se načítá, což snižuje vnímanou dobu načítání:
+
+\begin{lstlisting}[style=typescript]
+<div className="w-full animate-pulse space-y-3 rounded-2xl bg-card p-5 shadow-sm">
+  <div className="flex flex-wrap gap-3">
+    <Skeleton className="size-12 rounded-full" />
+    <div className="space-y-1.5">
+      <Skeleton className="h-4 w-24 rounded" />
+      <Skeleton className="h-4 w-20 rounded" />
+    </div>
+  </div>
+  <Skeleton className="h-16 rounded" />
+</div>
+\end{lstlisting}
+
+\subsection{Implementace serverových komponent v Next.js}
+
+Součástí Next.js jsou React Server Components, které umožňují vytvářet komponenty, které běží pouze na serveru. Tato architektura přináší výhody, ale i výzvy.
+
+\subsubsection{Řešení}
+
+Pro efektivní práci se Server Components jsem implementoval "interleaving pattern", kde jsou serverové a klientské komponenty kombinovány tak, aby maximalizovaly výhody obou přístupů. Složité datové operace jsou prováděny na serveru pomocí Server Components, zatímco interaktivní části UI jsou implementovány jako Client Components. Data jsou předávána z Server Components do Client Components pomocí props.
+
+Tento přístup umožňuje optimální rozdělení zodpovědností mezi server a klient a vede k lepšímu výkonu aplikace.
+
+\newpage
+\section{Bezpečnost}
+
+V rámci vývoje jsem implementoval několik bezpečnostních opatření na různých úrovních aplikace.
+
+\subsection{Autentizace}
+
+Systém autentizace je implementován pomocí knihovny Lucia \citep{Lucia2023}, která poskytuje moderní a bezpečný přístup k autentizaci v Next.js aplikacích.
+
+\subsubsection{Bezpečné ukládání hesel}
+
+Pro hashování hesel je použit algoritmus Argon2 \citep{Argon2GitHub}, který je odolný vůči útokům pomocí specializovaných hardwarových zařízení. Při hashování jsou použity bezpečné parametry pro zajištění odolnosti proti brute-force útokům.
+
+\subsubsection{Session management}
+
+Lucia poskytuje bezpečný způsob správy uživatelských relací pomocí HTTP cookies. Cookie obsahující token session je nastavena jako \texttt{HttpOnly}, což brání přístupu z JavaScriptu a snižuje riziko XSS útoků.
+
+\subsubsection{OAuth integrace}
+
+Pro autentizaci přes Google je použita knihovna Arctic, která implementuje bezpečnostní best practices pro OAuth 2.0, včetně použití PKCE (Proof Key for Code Exchange) pro zabránění CSRF útokům.
+
+\subsection{Autorizace}
+
+Autorizace zajišťuje, že uživatelé mají přístup pouze k funkcím a datům, ke kterým mají oprávnění. Implementace zahrnuje middleware pro ověření uživatele a kontrolu vlastnictví při modifikaci dat.
+
+\subsection{Ochrana proti běžným útokům}
+
+Aplikace implementuje různá opatření proti běžným typům útoků:
+
+\begin{itemize}
+    \item \textbf{XSS (Cross-Site Scripting)} - Využití automatického escapování HTML v Reactu a bezpečných komponent pro renderování uživatelského obsahu
+    \item \textbf{CSRF (Cross-Site Request Forgery)} - Automatická ochrana v Next.js a správné nastavení atributů cookies
+    \item \textbf{Injection útoky} - Použití parametrizovaných dotazů v Prisma ORM pro ochranu proti SQL injection
+    \item \textbf{Validace vstupu} - Důsledná validace všech uživatelských vstupů pomocí knihovny Zod na klientské i serverové straně
+\end{itemize}
+
+\subsection{Bezpečnost externích služeb}
+
+Aplikace využívá několik externích služeb, které vyžadují správnou konfiguraci pro zajištění bezpečnosti:
+
+\subsubsection{UploadThing}
+
+Pro zabezpečení nahrávání souborů jsou implementována tato opatření:
+
+\begin{itemize}
+    \item Omezení velikosti souborů
+    \item Validace typů souborů (pouze obrázky a videa)
+    \item Autentizace uživatelů před nahráváním
+    \item Generování náhodných názvů souborů pro prevenci předvídatelných URL
+\end{itemize}
+
+\subsubsection{Stream Chat}
+
+Pro zajištění bezpečnosti chat systému jsou implementována tato opatření:
+
+\begin{itemize}
+    \item Tokeny pro autentizaci jsou generovány na serveru s omezenou platností
+    \item Uživatelé mají přístup pouze k chatům, kde jsou členy
+    \item API klíče jsou bezpečně uloženy v proměnných prostředí
+\end{itemize}
+
+\subsection{Environmentální proměnné}
+
+Citlivé informace jako API klíče, přístupové údaje k databázi a tajné tokeny jsou uloženy v environmentálních proměnných, aby nebyly součástí verzovacího systému.
+
+Proměnné začínající \texttt{NEXT\_PUBLIC\_} jsou dostupné i v klientském kódu, zatímco ostatní jsou dostupné pouze na serveru, což je důležité pro bezpečné nakládání s citlivými údaji.
+
+\newpage
+\section{Nasazení}
+Důležitou součástí vývoje webové aplikace je její nasazení do produkčního prostředí. V této sekci popisuji proces nasazení aplikace na veřejně dostupný server.
+\subsection{Infrastruktura a technologie}
+Pro nasazení aplikace jsem zvolil následující technologie:
+\begin{itemize}
+\item \textbf{PM2} - Process manager pro Node.js aplikace
+\item \textbf{Nginx} - Webový server a reverse proxy
+\item \textbf{Linux VPS} - Virtuální privátní server s operačním systémem Linux
+\end{itemize}
+\subsection{Proces nasazení}
+\subsubsection{Příprava aplikace pro produkci}
+Před nasazením bylo nutné provést několik úprav v kódu a konfiguraci aplikace:
+\begin{itemize}
+\item Nastavení environmentálních proměnných pro produkční prostředí (databázové přístupy, API klíče)
+\item Optimalizace build procesu pro produkci
+\item Konfigurace databáze pro produkční prostředí
+\item Aktualizace autorizovaných URI v Google Cloud Console pro OAuth přihlašování
+\end{itemize}
+Zvláště důležitá byla úprava nastavení v Google Cloud Console, kde bylo potřeba přidat novou autorizovanou doménu a callback URL pro Google OAuth:
+\begin{itemize}
+\item Přidání \texttt{https://social.prach.xyz} do seznamu autorizovaných JavaScript origins
+\item Přidání \texttt{https://social.prach.xyz/api/auth/callback/google} do seznamu autorizovaných redirect URI
+\end{itemize}
+Bez této změny by přihlašování pomocí Google účtu nefungovalo v produkčním prostředí.
+Build aplikace byl vytvořen pomocí příkazu:
+\begin{verbatim}
+npm run build
+\end{verbatim}
+\subsubsection{Konfigurace PM2}
+PM2 je process manager, který zajišťuje běh Node.js aplikací v produkčním prostředí. Umožňuje automatický restart aplikace v případě pádu, load balancing a monitorování výkonu \citep{Bergmann2023}.
+Aplikace byla spuštěna v PM2 pomocí příkazu:
+\begin{verbatim}
+pm2 start npm --name "social" -- run start --prefix /home/prach/social/
+\end{verbatim}
+Tento příkaz spustí aplikaci pomocí skriptu \texttt{npm run start} v adresáři \texttt{/home/prach/social/} a pojmenuje proces v PM2 jako "social" pro snadnější správu.
+PM2 automaticky zajišťuje běh aplikace a její restart v případě pádu nebo restartu serveru.
+\subsubsection{Konfigurace Nginx}
+Pro vystavení aplikace na veřejnou doménu \texttt{social.prach.xyz} byl použit Nginx jako reverse proxy. Ten přeposílá požadavky z veřejné domény na lokální port, kde běží aplikace.
+Konfigurace Nginx:
+\begin{verbatim}
+server {
+    server_name social.prach.xyz;
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+\end{verbatim}
+Tato jednoduchá konfigurace nastavuje Nginx jako reverse proxy, který přeposílá veškerý provoz z domény \texttt{social.prach.xyz} na lokálně běžící aplikaci na portu 3000.
+\subsection{SSL certifikát a Cloudflare}
+Pro zabezpečenou komunikaci přes HTTPS byly použity spravované SSL certifikáty poskytované službou Cloudflare \citep{Cloudflare2023}. Na rozdíl od řešení jako Let's Encrypt a Certbot, Cloudflare nabízí jednodušší způsob správy SSL certifikátů jako součást své cloudové služby.
+\subsubsection{Integrace s Cloudflare}
+Cloudflare poskytuje několik klíčových služeb pro nasazení aplikace:
+\begin{itemize}
+\item \textbf{DNS správa} - Správa DNS záznamů pro subdoménu social.prach.xyz
+\item \textbf{SSL certifikáty} - Automatická správa a obnova SSL certifikátů
+\item \textbf{CDN} - Content Delivery Network pro rychlejší doručování statického obsahu
+\item \textbf{DDoS ochrana} - Základní ochrana proti DDoS útokům
+\end{itemize}
+Pro implementaci SSL s Cloudflare bylo nutné:
+\begin{enumerate}
+\item Přidat doménu prach.xyz do Cloudflare
+\item Nastavit DNS záznam pro subdoménu social.prach.xyz
+\item Aktivovat SSL certifikát v režimu "Full"
+\item Nakonfigurovat Nginx pro správné zpracování HTTPS provozu
+\end{enumerate}
+Díky Cloudflare je správa SSL certifikátu plně automatizovaná a nevyžaduje ruční obnovu.
+
+\newpage
+\section{Závěr}
+
+V rámci tohoto ročníkového projektu jsem úspěšně vytvořil plnohodnotnou sociální síť, která implementuje všechny požadované funkce a využívá moderní technologie pro vývoj webových aplikací. Podařilo se mi vybudovat komplexní systém, který zahrnuje registraci a přihlašování uživatelů, sdílení příspěvků s multimediálním obsahem, komentáře, hodnocení, ukládání oblíbených příspěvků, sledování uživatelů, real-time chat a systém oznámení.
+
+Aplikace disponuje všemi funkcemi definovanými v zadání:
+\begin{itemize}
+    \item Autentizace uživatelů pomocí hesla i Google účtu
+    \item Sdílení příspěvků s textem, obrázky a videi
+    \item Systém lajků, komentářů a ukládání příspěvků
+    \item Sledování uživatelů a personalizovaný feed
+    \item Real-time chat pro komunikaci mezi uživateli
+    \item Systém oznámení pro různé typy interakcí
+    \item Vyhledávání v příspěvcích a uživatelích
+    \item Zobrazování trendujících hashtagů a zmínek uživatelů
+    \item Přepínání mezi světlým a tmavým motivem
+    \item Plně responzivní design pro všechny velikosti zařízení
+    \item Efektivní cachování a optimalizace výkonu
+\end{itemize}
+
+Aplikace je postavena na moderních technologiích s využitím React, Next.js, TypeScript, Prisma, PostgreSQL a dalších knihoven a služeb. Díky serverovým komponentám a optimalizaci je aplikace rychlá a efektivní i při větším zatížení.
+
+\subsection{Výzvy a získané zkušenosti}
+
+\subsubsection{Orientace v novém ekosystému}
+
+Jednou z největších výzev na začátku projektu bylo zorientovat se v ekosystému Next.js. Pochopení konceptů, jako jsou Server Components, Client Components, Server Actions a Route Handlers, vyžadovalo počáteční studium a experimentování. Postupně jsem však získal jasnou představu o architektuře a mohl efektivně implementovat jednotlivé funkce.
+
+\subsubsection{Správa stavu a mutace cache}
+
+Nejnáročnější částí implementace bylo správně navrhnout systém pro práci s asynchronními daty a jejich aktualizaci v reálném čase. Implementace TanStack Query mi poskytla nástroje pro řešení těchto problémů, ale správné použití funkcí \texttt{queryClient} a definice závislostí mezi dotazy vyžadovalo hluboké pochopení knihovny a pečlivé testování.
+
+\subsubsection{Integrace externích služeb}
+
+Integrace služeb jako Stream Chat pro real-time komunikaci a UploadThing pro nahrávání médií představovala další výzvu. Bylo nutné pochopit API těchto služeb, implementovat správnou autentizaci a zajistit bezproblémovou komunikaci mezi aplikací a externími službami.
+
+\subsection{Zhodnocení projektu}
+
+Projekt sociální sítě PrachSocial považuji za úspěšný - podařilo se mi implementovat všechny požadované funkce a aplikace je plně funkční a připravená pro reálné použití. Je nasazena na veřejně dostupné URL adrese \texttt{https://social.prach.xyz}, kde ji lze vyzkoušet.
+
+Během vývoje jsem získal cenné zkušenosti s moderními technologiemi a přístupy ve vývoji webových aplikací. Naučil jsem se efektivně pracovat s Next.js, React Server Components, Prisma ORM a dalšími knihovnami, které představují současný standard v oboru. Osvojil jsem si pokročilé techniky jako optimistické aktualizace UI, správu cache, nekonečné scrollování a práci s real-time API.
+
+Tyto zkušenosti považuji za velmi přínosné v oblasti vývoje webových aplikací. Projekt mi umožnil pracovat na komplexním systému od návrhu po nasazení a řešit reálné problémy, se kterými se setkávají vývojáři v praxi.
+
+Celkově hodnotím práci na projektu jako velmi přínosnou a jsem přesvědčen, že vytvořená aplikace splňuje vysoké standardy moderních webových aplikací z hlediska funkčnosti, uživatelského zážitku i výkonu.
+
+\newpage
+\renewcommand\refname{Seznam použitých zdrojů}
+\begin{thebibliography}{99}
+
+\bibitem{Vercel2023} Vercel, Inc. (2023). \textit{Next.js Documentation}. Získáno z \url{https://nextjs.org/docs}
+
+\bibitem{Vercel2023AppDir} Vercel, Inc. (2023). \textit{Next.js App Router}. Získáno z \url{https://nextjs.org/docs/app}
+
+\bibitem{Vercel2023RouteGroups} Vercel, Inc. (2023). \textit{Route Groups}. Získáno z \url{https://nextjs.org/docs/app/building-your-application/routing/route-groups}
+
+\bibitem{Vercel2023DynamicRoutes} Vercel, Inc. (2023). \textit{Dynamic Routes}. Získáno z \url{https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes}
+
+\bibitem{Vercel2023RouteHandlers} Vercel, Inc. (2023). \textit{Route Handlers}. Získáno z \url{https://nextjs.org/docs/app/building-your-application/routing/route-handlers}
+
+\bibitem{Vercel2023ProjectOrganization} Vercel, Inc. (2023). \textit{Project Organization and File Colocation}. Získáno z \url{https://nextjs.org/docs/app/building-your-application/routing/colocation}
+
+\bibitem{Vercel2023FileConventions} Vercel, Inc. (2023). \textit{File Conventions}. Získáno z \url{https://nextjs.org/docs/app/api-reference/file-conventions}
+
+\bibitem{React2023} Meta Platforms, Inc. (2023). \textit{React Documentation}. Získáno z \url{https://react.dev/}
+
+\bibitem{React2023Hooks} Meta Platforms, Inc. (2023). \textit{React Hooks}. Získáno z \url{https://react.dev/reference/react}
+
+\bibitem{Prisma2023} Prisma (2023). \textit{Prisma Documentation}. Získáno z \url{https://www.prisma.io/docs/}
+
+\bibitem{Prisma2023Schema} Prisma (2023). \textit{Prisma Schema}. Získáno z \url{https://www.prisma.io/docs/orm/prisma-schema}
+
+\bibitem{Lucia2023} Lucia Auth (2023). \textit{Lucia Documentation}. Získáno z \url{https://lucia-auth.com/}
+
+\bibitem{StackOverflow2021} Stack Overflow (2021). \textit{How to implement debounce in React?} Získáno z \url{https://stackoverflow.com/questions/23123138/how-to-implement-debounce-in-react}
+
+\bibitem{ReactHookForm} React Hook Form (2023). \textit{React Hook Form Documentation}. Získáno z \url{https://react-hook-form.com/}
+
+\bibitem{ZodGitHub} Zod (2023). \textit{Zod: TypeScript-first schema validation with static type inference}. Získáno z \url{https://github.com/colinhacks/zod}
+
+\bibitem{Argon2GitHub} Node-RS (2023). \textit{Node-RS Argon2: Rust Argon2 WASM binding for NodeJS}. Získáno z \url{https://github.com/napi-rs/node-rs/tree/main/packages/argon2}
+
+\bibitem{ArcticGitHub} Pilcrow (2023). \textit{Arctic: Minimal OAuth for JavaScript}. Získáno z \url{https://github.com/pilcrowOnPaper/arctic}
+
+\bibitem{Tiptap2023} Tiptap (2023). \textit{Tiptap Documentation}. Získáno z \url{https://tiptap.dev/}
+
+\bibitem{TanStackQuery} TanStack (2023). \textit{TanStack Query (React Query) Documentation}. Získáno z \url{https://tanstack.com/query/latest/docs/react/overview}
+
+\bibitem{TanStackQuery2023InfiniteReverse} TanStack (2023). \textit{Infinite Queries - Showing pages in reversed order}. Získáno z \url{https://tanstack.com/query/latest/docs/react/guides/infinite-queries#what-if-i-want-to-show-the-pages-in-reversed-order}
+
+\bibitem{TanStackQuery2023OptimisticUpdates} TanStack (2023). \textit{Optimistic Updates}. Získáno z \url{https://tanstack.com/query/latest/docs/react/guides/optimistic-updates}
+
+\bibitem{ReactIntersectionObserver} React Intersection Observer (2023). \textit{React Intersection Observer}. Získáno z \url{https://github.com/thebuilder/react-intersection-observer}
+
+\bibitem{StreamChat} Stream (2023). \textit{Stream Chat API Documentation}. Získáno z \url{https://getstream.io/chat/docs/}
+
+\bibitem{PostgreSQL2023FTS} PostgreSQL (2023). \textit{Full Text Search}. Získáno z \url{https://www.postgresql.org/docs/current/textsearch.html}
+
+\bibitem{NextThemes} Next Themes (2023). \textit{Next Themes Documentation}. Získáno z \url{https://github.com/pacocoursey/next-themes}
+
+\bibitem{TailwindCSS} Tailwind Labs (2023). \textit{Tailwind CSS Documentation}. Získáno z \url{https://tailwindcss.com/docs}
+
+\bibitem{UploadThing} UploadThing (2023). \textit{UploadThing Documentation}. Získáno z \url{https://docs.uploadthing.com/}
+
+\bibitem{RadixUI} Workos (2023). \textit{Radix UI Documentation}. Získáno z \url{https://www.radix-ui.com/docs/primitives/overview/introduction}
+
+\bibitem{Shadcn} Shadcn (2023). \textit{Shadcn/UI Components}. Získáno z \url{https://ui.shadcn.com/docs}
+
+\bibitem{Bergmann2023} Bergmann, A. (2023). \textit{PM2 Documentation: Advanced, Production Process Manager for Node.js}. Získáno z \url{https://pm2.keymetrics.io/docs/usage/quick-start/}
+
+\bibitem{Cloudflare2023} Cloudflare, Inc. (2023). \textit{Cloudflare SSL/TLS Documentation}. Získáno z \url{https://developers.cloudflare.com/ssl/}
+
+\end{thebibliography}
+\end{document}
